@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -38,6 +39,7 @@ import com.denxhinjo.fabinventory.ui.common.UiState
 @Composable
 fun DashboardScreen(
     onLogout: () -> Unit,
+    onManageAccess: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = hiltViewModel(),
 ) {
@@ -50,6 +52,11 @@ fun DashboardScreen(
             CenterAlignedTopAppBar(
                 title = { Text(session?.fullName?.takeIf { it.isNotBlank() }?.let { "Hi, $it" } ?: "Dashboard") },
                 actions = {
+                    if (session?.role == "admin") {
+                        IconButton(onClick = onManageAccess) {
+                            Icon(Icons.Filled.AdminPanelSettings, contentDescription = "Manage warehouse access")
+                        }
+                    }
                     IconButton(onClick = {
                         viewModel.logout()
                         onLogout()

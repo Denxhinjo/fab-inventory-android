@@ -7,12 +7,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.denxhinjo.fabinventory.ui.admin.AdminHomeScreen
+import com.denxhinjo.fabinventory.ui.admin.EditUserAccessScreen
+import com.denxhinjo.fabinventory.ui.admin.ManageAccessScreen
 import com.denxhinjo.fabinventory.ui.dashboard.DashboardScreen
+import com.denxhinjo.fabinventory.ui.locations.LocationFormScreen
+import com.denxhinjo.fabinventory.ui.locations.LocationsListScreen
 import com.denxhinjo.fabinventory.ui.login.LoginScreen
 import com.denxhinjo.fabinventory.ui.movements.CreateMovementScreen
 import com.denxhinjo.fabinventory.ui.movements.MovementsScreen
 import com.denxhinjo.fabinventory.ui.products.ProductDetailScreen
+import com.denxhinjo.fabinventory.ui.products.ProductFormScreen
 import com.denxhinjo.fabinventory.ui.products.ProductsScreen
+import com.denxhinjo.fabinventory.ui.suppliers.SupplierFormScreen
+import com.denxhinjo.fabinventory.ui.suppliers.SuppliersListScreen
 
 @Composable
 fun FabInventoryNavHost(navController: NavHostController = rememberNavController()) {
@@ -36,6 +44,7 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
                             popUpTo(0) { inclusive = true }
                         }
                     },
+                    onManageAccess = { navController.navigate(Routes.ADMIN_HOME) },
                 )
             }
         }
@@ -44,6 +53,7 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
             MainScaffold(navController = navController, currentRoute = Routes.PRODUCTS) {
                 ProductsScreen(
                     onProductClick = { id -> navController.navigate(Routes.productDetail(id)) },
+                    onAddClick = { navController.navigate(Routes.productForm()) },
                 )
             }
         }
@@ -63,6 +73,7 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
             ProductDetailScreen(
                 onBack = { navController.popBackStack() },
                 onRecordMovement = { id -> navController.navigate(Routes.createMovement(id)) },
+                onEdit = { id -> navController.navigate(Routes.productForm(id)) },
             )
         }
 
@@ -77,6 +88,96 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
             ),
         ) {
             CreateMovementScreen(
+                onDone = { navController.popBackStack() },
+                onCancel = { navController.popBackStack() },
+            )
+        }
+
+        composable(
+            route = Routes.PRODUCT_FORM,
+            arguments = listOf(
+                navArgument(Routes.ARG_EDIT_PRODUCT_ID) {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+            ),
+        ) {
+            ProductFormScreen(
+                onDone = { navController.popBackStack() },
+                onCancel = { navController.popBackStack() },
+            )
+        }
+
+        composable(Routes.ADMIN_HOME) {
+            AdminHomeScreen(
+                onBack = { navController.popBackStack() },
+                onManageAccess = { navController.navigate(Routes.MANAGE_ACCESS) },
+                onManageLocations = { navController.navigate(Routes.LOCATIONS_LIST) },
+                onManageSuppliers = { navController.navigate(Routes.SUPPLIERS_LIST) },
+            )
+        }
+
+        composable(Routes.MANAGE_ACCESS) {
+            ManageAccessScreen(
+                onBack = { navController.popBackStack() },
+                onUserClick = { userId -> navController.navigate(Routes.editUserAccess(userId)) },
+            )
+        }
+
+        composable(
+            route = Routes.EDIT_USER_ACCESS,
+            arguments = listOf(navArgument(Routes.ARG_USER_ID) { type = NavType.IntType }),
+        ) {
+            EditUserAccessScreen(
+                onDone = { navController.popBackStack() },
+                onCancel = { navController.popBackStack() },
+            )
+        }
+
+        composable(Routes.LOCATIONS_LIST) {
+            LocationsListScreen(
+                onBack = { navController.popBackStack() },
+                onAddClick = { navController.navigate(Routes.locationForm()) },
+                onLocationClick = { id -> navController.navigate(Routes.locationForm(id)) },
+            )
+        }
+
+        composable(
+            route = Routes.LOCATION_FORM,
+            arguments = listOf(
+                navArgument(Routes.ARG_EDIT_LOCATION_ID) {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+            ),
+        ) {
+            LocationFormScreen(
+                onDone = { navController.popBackStack() },
+                onCancel = { navController.popBackStack() },
+            )
+        }
+
+        composable(Routes.SUPPLIERS_LIST) {
+            SuppliersListScreen(
+                onBack = { navController.popBackStack() },
+                onAddClick = { navController.navigate(Routes.supplierForm()) },
+                onSupplierClick = { id -> navController.navigate(Routes.supplierForm(id)) },
+            )
+        }
+
+        composable(
+            route = Routes.SUPPLIER_FORM,
+            arguments = listOf(
+                navArgument(Routes.ARG_EDIT_SUPPLIER_ID) {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+            ),
+        ) {
+            SupplierFormScreen(
                 onDone = { navController.popBackStack() },
                 onCancel = { navController.popBackStack() },
             )
