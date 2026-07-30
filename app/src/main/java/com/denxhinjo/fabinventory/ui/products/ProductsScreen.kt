@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.denxhinjo.fabinventory.data.remote.dto.ProductResponse
+import com.denxhinjo.fabinventory.ui.common.AppCard
 import com.denxhinjo.fabinventory.ui.common.FullScreenError
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
 
@@ -106,10 +106,10 @@ fun ProductsScreen(
 
 @Composable
 private fun ProductRow(product: ProductResponse, onClick: () -> Unit) {
-    Card(
+    AppCard(
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth(),
-        onClick = onClick,
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(product.name, style = MaterialTheme.typography.titleMedium)

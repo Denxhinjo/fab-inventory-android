@@ -1,3 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.FabInventory" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Dark-only, matching the site's forced-dark design. Avoids a flash of a
+         light system window/splash background before Compose's own dark theme
+         takes over. -->
+    <style name="Theme.FabInventory" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/color_bg</item>
+        <item name="android:statusBarColor">@color/color_bg</item>
+        <item name="android:navigationBarColor">@color/color_bg</item>
+    </style>
 </resources>

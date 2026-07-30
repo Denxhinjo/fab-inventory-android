@@ -11,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.denxhinjo.fabinventory.data.remote.dto.ProductResponse
+import com.denxhinjo.fabinventory.ui.common.AppCard
 import com.denxhinjo.fabinventory.ui.common.FullScreenError
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
 import com.denxhinjo.fabinventory.ui.common.UiState
@@ -88,7 +88,7 @@ private fun ProductDetailContent(
             Text("SKU $it", style = MaterialTheme.typography.bodyMedium)
         }
 
-        Card(modifier = Modifier
+        AppCard(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp)) {
             Column(modifier = Modifier.padding(16.dp)) {

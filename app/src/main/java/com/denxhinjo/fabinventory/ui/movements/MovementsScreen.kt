@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.denxhinjo.fabinventory.data.remote.dto.MovementType
 import com.denxhinjo.fabinventory.data.remote.dto.StockMovementResponse
+import com.denxhinjo.fabinventory.ui.common.AppCard
 import com.denxhinjo.fabinventory.ui.common.FullScreenError
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
 
@@ -94,7 +94,7 @@ fun MovementsScreen(
 
 @Composable
 private fun MovementRow(movement: StockMovementResponse) {
-    Card(
+    AppCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp),

@@ -1,38 +1,37 @@
 package com.denxhinjo.fabinventory.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
-private val LightColors = lightColorScheme(
-    primary = FabBlue,
-    onPrimary = Color.White,
-    primaryContainer = FabBlueLight,
-    onPrimaryContainer = FabBlueDark,
-    secondary = FabGray,
-    error = FabError,
-)
-
-private val DarkColors = darkColorScheme(
-    primary = FabBlueLight,
-    onPrimary = FabBlueDark,
-    primaryContainer = FabBlueDark,
-    onPrimaryContainer = FabBlueLight,
-    secondary = FabGray,
-    error = FabError,
+// The site is dark-only by design (`color-scheme: dark` in globals.css, no
+// light-mode toggle) -- the app matches that rather than following the
+// system light/dark setting.
+private val AppColorScheme = darkColorScheme(
+    primary = ColorAccent,
+    onPrimary = ColorBg,
+    primaryContainer = ColorAccentDim,
+    onPrimaryContainer = ColorAccentStrong,
+    secondary = ColorAccent2,
+    onSecondary = ColorForeground,
+    secondaryContainer = ColorSurfaceHover,
+    onSecondaryContainer = ColorForeground,
+    background = ColorBg,
+    onBackground = ColorForeground,
+    surface = ColorSurface,
+    onSurface = ColorForeground,
+    surfaceVariant = ColorSurfaceHover,
+    onSurfaceVariant = ColorMuted,
+    outline = ColorBorder,
+    outlineVariant = ColorBorderStrong,
+    error = ColorError,
+    onError = ColorBg,
 )
 
 @Composable
-fun FabInventoryTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
-) {
-    val colorScheme = if (darkTheme) DarkColors else LightColors
+fun FabInventoryTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = AppColorScheme,
         typography = FabInventoryTypography,
         content = content,
     )

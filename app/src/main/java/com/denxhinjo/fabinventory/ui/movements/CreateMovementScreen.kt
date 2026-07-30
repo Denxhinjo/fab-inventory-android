@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -37,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.denxhinjo.fabinventory.data.remote.dto.MovementType
 import com.denxhinjo.fabinventory.data.remote.dto.ProductResponse
+import com.denxhinjo.fabinventory.ui.common.AppCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -173,11 +173,11 @@ private fun ProductPicker(
         contentPadding = PaddingValues(vertical = 4.dp),
     ) {
         items(results, key = { it.id }) { product ->
-            Card(
+            AppCard(
+                onClick = { onSelect(product) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp),
-                onClick = { onSelect(product) },
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(product.name, style = MaterialTheme.typography.titleMedium)
@@ -193,7 +193,7 @@ private fun ProductPicker(
 
 @Composable
 private fun SelectedProductCard(product: ProductResponse, onClear: () -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

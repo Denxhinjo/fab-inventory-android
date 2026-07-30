@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -30,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.denxhinjo.fabinventory.data.remote.dto.DashboardResponse
 import com.denxhinjo.fabinventory.data.remote.dto.LowStockItem
 import com.denxhinjo.fabinventory.data.remote.dto.RecentActivityItem
+import com.denxhinjo.fabinventory.ui.common.AppCard
 import com.denxhinjo.fabinventory.ui.common.FullScreenError
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
 import com.denxhinjo.fabinventory.ui.common.UiState
@@ -107,7 +107,7 @@ private fun DashboardContent(data: DashboardResponse, modifier: Modifier = Modif
             }
         }
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
+            AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text("Last 30 days", style = MaterialTheme.typography.titleMedium)
                     Row(
@@ -149,7 +149,7 @@ private fun SectionHeader(title: String) {
 
 @Composable
 private fun StatCard(label: String, value: String, modifier: Modifier = Modifier, emphasize: Boolean = false) {
-    Card(modifier = modifier) {
+    AppCard(modifier = modifier) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = value,
@@ -163,7 +163,7 @@ private fun StatCard(label: String, value: String, modifier: Modifier = Modifier
 
 @Composable
 private fun LowStockRow(item: LowStockItem) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(item.name, style = MaterialTheme.typography.titleMedium)
             Text(
@@ -179,7 +179,7 @@ private fun LowStockRow(item: LowStockItem) {
 
 @Composable
 private fun RecentActivityRow(item: RecentActivityItem) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text("${item.type} · ${item.productName}", style = MaterialTheme.typography.titleMedium)
             Text(
