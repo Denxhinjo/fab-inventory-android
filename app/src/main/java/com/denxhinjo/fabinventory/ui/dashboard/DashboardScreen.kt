@@ -125,12 +125,15 @@ private fun DashboardContent(data: DashboardResponse, modifier: Modifier = Modif
 
         if (data.lowStockItems.isNotEmpty()) {
             item { SectionHeader("Low stock items") }
-            items(data.lowStockItems, key = { it.id }) { item -> LowStockRow(item) }
+            // Prefixed keys: low-stock items and recent-activity entries come from
+            // different tables (products vs. stock movements) and can share the
+            // same numeric id, which crashes LazyColumn if used as-is for both.
+            items(data.lowStockItems, key = { "low_stock_${it.id}" }) { item -> LowStockRow(item) }
         }
 
         if (data.recentActivity.isNotEmpty()) {
             item { SectionHeader("Recent activity") }
-            items(data.recentActivity, key = { it.id }) { item -> RecentActivityRow(item) }
+            items(data.recentActivity, key = { "activity_${it.id}" }) { item -> RecentActivityRow(item) }
         }
     }
 }

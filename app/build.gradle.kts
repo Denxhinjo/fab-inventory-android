@@ -19,9 +19,13 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Android emulator's alias for the host machine's localhost, matching the
-        // docker-compose backend at http://localhost:8000 from the IMS_Clean README.
-        buildConfigField("String", "DEFAULT_BASE_URL", "\"http://10.0.2.2:8000/\"")
+        // Points at the dev machine's LAN IP so a physical phone on the same Wi-Fi
+        // can reach the docker-compose backend. This IP is DHCP-assigned and can
+        // change -- if the app can't connect, check the host's current IP
+        // (ipconfig / Wi-Fi adapter) and update this.
+        // For the Android *emulator* instead of a physical device, use
+        // "http://10.0.2.2:8000/" -- the emulator's fixed alias for host localhost.
+        buildConfigField("String", "DEFAULT_BASE_URL", "\"http://192.168.1.16:8000/\"")
     }
 
     buildTypes {
