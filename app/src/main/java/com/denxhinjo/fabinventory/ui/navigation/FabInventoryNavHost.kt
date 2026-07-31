@@ -21,6 +21,8 @@ import com.denxhinjo.fabinventory.ui.products.ProductFormScreen
 import com.denxhinjo.fabinventory.ui.products.ProductsScreen
 import com.denxhinjo.fabinventory.ui.suppliers.SupplierFormScreen
 import com.denxhinjo.fabinventory.ui.suppliers.SuppliersListScreen
+import com.denxhinjo.fabinventory.ui.users.UserFormScreen
+import com.denxhinjo.fabinventory.ui.users.UsersListScreen
 
 @Composable
 fun FabInventoryNavHost(navController: NavHostController = rememberNavController()) {
@@ -115,6 +117,7 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
                 onManageAccess = { navController.navigate(Routes.MANAGE_ACCESS) },
                 onManageLocations = { navController.navigate(Routes.LOCATIONS_LIST) },
                 onManageSuppliers = { navController.navigate(Routes.SUPPLIERS_LIST) },
+                onManageUsers = { navController.navigate(Routes.USERS_LIST) },
             )
         }
 
@@ -178,6 +181,30 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
             ),
         ) {
             SupplierFormScreen(
+                onDone = { navController.popBackStack() },
+                onCancel = { navController.popBackStack() },
+            )
+        }
+
+        composable(Routes.USERS_LIST) {
+            UsersListScreen(
+                onBack = { navController.popBackStack() },
+                onAddClick = { navController.navigate(Routes.userForm()) },
+                onUserClick = { id -> navController.navigate(Routes.userForm(id)) },
+            )
+        }
+
+        composable(
+            route = Routes.USER_FORM,
+            arguments = listOf(
+                navArgument(Routes.ARG_EDIT_USER_ID) {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+            ),
+        ) {
+            UserFormScreen(
                 onDone = { navController.popBackStack() },
                 onCancel = { navController.popBackStack() },
             )

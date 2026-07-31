@@ -7,6 +7,7 @@ object Routes {
     const val ARG_USER_ID = "userId"
     const val ARG_EDIT_LOCATION_ID = "editLocationId"
     const val ARG_EDIT_SUPPLIER_ID = "editSupplierId"
+    const val ARG_EDIT_USER_ID = "editUserId"
 
     const val LOGIN = "login"
     const val DASHBOARD = "dashboard"
@@ -16,6 +17,7 @@ object Routes {
     const val MANAGE_ACCESS = "manage_access"
     const val LOCATIONS_LIST = "locations_list"
     const val SUPPLIERS_LIST = "suppliers_list"
+    const val USERS_LIST = "users_list"
 
     const val PRODUCT_DETAIL = "product_detail/{$ARG_PRODUCT_ID}"
     const val CREATE_MOVEMENT = "create_movement?$ARG_PREFILLED_PRODUCT_ID={$ARG_PREFILLED_PRODUCT_ID}"
@@ -23,6 +25,7 @@ object Routes {
     const val EDIT_USER_ACCESS = "edit_user_access/{$ARG_USER_ID}"
     const val LOCATION_FORM = "location_form?$ARG_EDIT_LOCATION_ID={$ARG_EDIT_LOCATION_ID}"
     const val SUPPLIER_FORM = "supplier_form?$ARG_EDIT_SUPPLIER_ID={$ARG_EDIT_SUPPLIER_ID}"
+    const val USER_FORM = "user_form?$ARG_EDIT_USER_ID={$ARG_EDIT_USER_ID}"
 
     fun productDetail(id: Int) = "product_detail/$id"
 
@@ -39,4 +42,7 @@ object Routes {
 
     fun supplierForm(editSupplierId: Int? = null): String =
         if (editSupplierId != null) "supplier_form?$ARG_EDIT_SUPPLIER_ID=$editSupplierId" else "supplier_form"
+
+    fun userForm(editUserId: Int? = null): String =
+        if (editUserId != null) "user_form?$ARG_EDIT_USER_ID=$editUserId" else "user_form"
 }

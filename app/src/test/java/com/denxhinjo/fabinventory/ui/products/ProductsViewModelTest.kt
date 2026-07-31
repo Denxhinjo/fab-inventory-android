@@ -1,12 +1,16 @@
 package com.denxhinjo.fabinventory.ui.products
 
 import com.denxhinjo.fabinventory.MainDispatcherRule
+import com.denxhinjo.fabinventory.data.local.UserSession
 import com.denxhinjo.fabinventory.data.remote.dto.ProductListResponse
 import com.denxhinjo.fabinventory.data.remote.dto.ProductResponse
+import com.denxhinjo.fabinventory.data.repository.AuthRepository
 import com.denxhinjo.fabinventory.data.repository.ProductRepository
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -23,6 +27,9 @@ class ProductsViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val productRepository: ProductRepository = mockk()
+    private val authRepository: AuthRepository = mockk {
+        every { sessionFlow } returns flowOf(UserSession(token = "t", role = "user", fullName = "Test", email = "t@example.com"))
+    }
 
     private fun product(id: Int, name: String) = ProductResponse(
         id = id,
@@ -59,7 +66,7 @@ class ProductsViewModelTest {
             ),
         )
 
-        val viewModel = ProductsViewModel(productRepository)
+        val viewModel = ProductsViewModel(productRepository, authRepository)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -77,7 +84,7 @@ class ProductsViewModelTest {
             ProductListResponse(items = listOf(product(1, "Cement")), total = 1, page = 1, pageSize = 20, totalPages = 1),
         )
 
-        val viewModel = ProductsViewModel(productRepository)
+        val viewModel = ProductsViewModel(productRepository, authRepository)
         advanceUntilIdle()
 
         viewModel.onSearchQueryChange("cement")
@@ -95,7 +102,7 @@ class ProductsViewModelTest {
         coEvery { productRepository.getProducts(page = 1, search = "") } returns
             Result.failure(Exception("Can't reach the server. Check your connection and the server address."))
 
-        val viewModel = ProductsViewModel(productRepository)
+        val viewModel = ProductsViewModel(productRepository, authRepository)
         advanceUntilIdle()
 
         assertEquals(

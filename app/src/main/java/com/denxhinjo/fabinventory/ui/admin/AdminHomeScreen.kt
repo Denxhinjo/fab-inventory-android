@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.LocalShipping
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Warehouse
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,9 +32,16 @@ fun AdminHomeScreen(
     onManageAccess: () -> Unit,
     onManageLocations: () -> Unit,
     onManageSuppliers: () -> Unit,
+    onManageUsers: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val actions = listOf(
+        AdminAction(
+            "Users",
+            "Create, edit, deactivate, or delete user accounts",
+            Icons.Filled.People,
+            onManageUsers,
+        ),
         AdminAction(
             "Warehouse access",
             "Choose which warehouses each user can add or edit products in",

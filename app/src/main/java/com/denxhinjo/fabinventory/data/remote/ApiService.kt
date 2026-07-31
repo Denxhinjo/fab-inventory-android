@@ -14,7 +14,9 @@ import com.denxhinjo.fabinventory.data.remote.dto.SupplierRequest
 import com.denxhinjo.fabinventory.data.remote.dto.SupplierResponse
 import com.denxhinjo.fabinventory.data.remote.dto.SupplierSummary
 import com.denxhinjo.fabinventory.data.remote.dto.TokenResponse
+import com.denxhinjo.fabinventory.data.remote.dto.UserCreateRequest
 import com.denxhinjo.fabinventory.data.remote.dto.UserResponse
+import com.denxhinjo.fabinventory.data.remote.dto.UserUpdateRequest
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -131,6 +133,15 @@ interface ApiService {
 
     @GET("api/users")
     suspend fun getUsers(): List<UserResponse>
+
+    @POST("api/users")
+    suspend fun createUser(@Body request: UserCreateRequest): UserResponse
+
+    @PUT("api/users/{id}")
+    suspend fun updateUser(@Path("id") id: Int, @Body request: UserUpdateRequest): UserResponse
+
+    @DELETE("api/users/{id}")
+    suspend fun deleteUser(@Path("id") id: Int): Response<ResponseBody>
 
     @GET("api/users/me/locations")
     suspend fun getMyPermittedLocations(): List<LocationResponse>
