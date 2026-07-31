@@ -15,6 +15,9 @@ class StockMovementRepository @Inject constructor(
     suspend fun getMovements(page: Int, pageSize: Int = 20): Result<StockMovementListResponse> =
         safeApiCall { apiService.getStockMovements(page = page, pageSize = pageSize) }
 
+    suspend fun getMovementsInRange(dateFrom: String, dateTo: String, pageSize: Int = 200): Result<StockMovementListResponse> =
+        safeApiCall { apiService.getStockMovements(page = 1, pageSize = pageSize, dateFrom = dateFrom, dateTo = dateTo) }
+
     suspend fun createMovement(request: StockMovementCreateRequest): Result<StockMovementResponse> =
         safeApiCall { apiService.createStockMovement(request) }
 }

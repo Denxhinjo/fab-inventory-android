@@ -1,6 +1,7 @@
 package com.denxhinjo.fabinventory.data.repository
 
 import com.denxhinjo.fabinventory.data.remote.ApiService
+import com.denxhinjo.fabinventory.data.remote.dto.CategoryResponse
 import com.denxhinjo.fabinventory.data.remote.dto.CategorySummary
 import com.denxhinjo.fabinventory.data.remote.dto.ProductListResponse
 import com.denxhinjo.fabinventory.data.remote.dto.ProductResponse
@@ -85,6 +86,8 @@ class ProductRepository @Inject constructor(
     }
 
     suspend fun getCategories(): Result<List<CategorySummary>> = safeApiCall { apiService.getCategories() }
+
+    suspend fun getCategoriesFull(): Result<List<CategoryResponse>> = safeApiCall { apiService.getCategoriesFull() }
 
     suspend fun getSuppliers(): Result<List<SupplierSummary>> = safeApiCall { apiService.getSuppliers() }
 }

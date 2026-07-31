@@ -26,6 +26,15 @@ data class SupplierSummary(
     val name: String,
 )
 
+/** Mirrors backend/app/schemas/category.py::CategoryOut -- includes the product_count the plain CategorySummary omits. */
+@Serializable
+data class CategoryResponse(
+    val id: Int,
+    val name: String,
+    val color: String? = null,
+    @SerialName("product_count") val productCount: Int = 0,
+)
+
 @Serializable
 data class ProductResponse(
     val id: Int,

@@ -47,6 +47,8 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
                         }
                     },
                     onManageAccess = { navController.navigate(Routes.ADMIN_HOME) },
+                    onAddProduct = { navController.navigate(Routes.productForm()) },
+                    onRecordMovement = { navController.navigate(Routes.createMovement()) },
                 )
             }
         }

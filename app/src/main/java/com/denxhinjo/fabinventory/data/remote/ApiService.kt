@@ -1,5 +1,6 @@
 package com.denxhinjo.fabinventory.data.remote
 
+import com.denxhinjo.fabinventory.data.remote.dto.CategoryResponse
 import com.denxhinjo.fabinventory.data.remote.dto.CategorySummary
 import com.denxhinjo.fabinventory.data.remote.dto.DashboardResponse
 import com.denxhinjo.fabinventory.data.remote.dto.LocationIdsRequest
@@ -104,6 +105,9 @@ interface ApiService {
     @GET("api/categories")
     suspend fun getCategories(): List<CategorySummary>
 
+    @GET("api/categories")
+    suspend fun getCategoriesFull(): List<CategoryResponse>
+
     @GET("api/suppliers")
     suspend fun getSuppliers(): List<SupplierSummary>
 
@@ -161,6 +165,8 @@ interface ApiService {
         @Query("page_size") pageSize: Int = 20,
         @Query("product_id") productId: Int? = null,
         @Query("movement_type") movementType: String? = null,
+        @Query("date_from") dateFrom: String? = null,
+        @Query("date_to") dateTo: String? = null,
     ): StockMovementListResponse
 
     @POST("api/stock-movements")

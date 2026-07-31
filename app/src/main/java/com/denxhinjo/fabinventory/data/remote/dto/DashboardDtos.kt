@@ -13,6 +13,17 @@ data class DashboardResponse(
     @SerialName("work_process_by_status") val workProcessByStatus: Map<String, Int>,
     @SerialName("recent_activity") val recentActivity: List<RecentActivityItem>,
     @SerialName("low_stock_items") val lowStockItems: List<LowStockItem>,
+    @SerialName("top_moved_products") val topMovedProducts: List<TopMovedProduct> = emptyList(),
+    @SerialName("movements_this_week") val movementsThisWeek: Int = 0,
+    @SerialName("movements_last_week") val movementsLastWeek: Int = 0,
+)
+
+@Serializable
+data class TopMovedProduct(
+    val id: Int,
+    val name: String,
+    val quantity: Double,
+    val unit: String,
 )
 
 @Serializable
@@ -23,12 +34,15 @@ data class DashboardStats(
     @SerialName("active_work_processes") val activeWorkProcesses: Int,
     @SerialName("completed_work_processes") val completedWorkProcesses: Int,
     @SerialName("total_users") val totalUsers: Int,
+    @SerialName("total_inventory_value") val totalInventoryValue: Double = 0.0,
 )
 
 @Serializable
 data class StockSummary(
     @SerialName("stock_in_30d") val stockIn30d: Double,
     @SerialName("stock_out_30d") val stockOut30d: Double,
+    @SerialName("stock_in_prev_30d") val stockInPrev30d: Double = 0.0,
+    @SerialName("stock_out_prev_30d") val stockOutPrev30d: Double = 0.0,
 )
 
 @Serializable
