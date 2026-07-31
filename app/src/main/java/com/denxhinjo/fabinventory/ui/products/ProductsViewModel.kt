@@ -62,6 +62,8 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
+    fun dismissDeleteError() = _uiState.update { it.copy(deleteError = null) }
+
     fun onSearchQueryChange(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
         searchJob?.cancel()

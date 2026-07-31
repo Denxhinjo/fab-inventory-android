@@ -54,4 +54,6 @@ class SuppliersListViewModel @Inject constructor(
             _uiState.update { it.copy(isDeleting = false) }
         }
     }
+
+    fun dismissDeleteError() = _uiState.update { it.copy(deleteError = null) }
 }

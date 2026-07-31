@@ -29,8 +29,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +52,7 @@ import coil.compose.AsyncImage
 import com.denxhinjo.fabinventory.data.remote.dto.ProductResponse
 import com.denxhinjo.fabinventory.data.remote.resolveMediaUrl
 import com.denxhinjo.fabinventory.ui.common.AppCard
+import com.denxhinjo.fabinventory.ui.common.EmptyState
 import com.denxhinjo.fabinventory.ui.common.FullScreenError
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
 
@@ -64,6 +68,14 @@ fun ProductsScreen(
     val isAdmin by viewModel.isAdmin.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
     var pendingDeleteId by remember { mutableStateOf<Int?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(uiState.deleteError) {
+        uiState.deleteError?.let { error ->
+            snackbarHostState.showSnackbar(error)
+            viewModel.dismissDeleteError()
+        }
+    }
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo }
@@ -78,6 +90,7 @@ fun ProductsScreen(
 
     Scaffold(
         modifier = modifier,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = { CenterAlignedTopAppBar(title = { Text("Products") }) },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddClick) {
@@ -97,14 +110,6 @@ fun ProductsScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
             )
 
-            uiState.deleteError?.let { error ->
-                Text(
-                    text = error,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                )
-            }
-
             when {
                 uiState.isLoading && uiState.products.isEmpty() -> {
                     FullScreenLoading()
@@ -112,29 +117,47 @@ fun ProductsScreen(
                 uiState.error != null && uiState.products.isEmpty() -> {
                     FullScreenError(message = uiState.error ?: "Something went wrong", onRetry = viewModel::refresh)
                 }
+                uiState.products.isEmpty() -> {
+                    EmptyState(
+                        icon = Icons.Filled.Inventory2,
+                        title = if (uiState.searchQuery.isBlank()) "No products yet" else "No matches",
+                        subtitle = if (uiState.searchQuery.isBlank()) {
+                            "Tap + to add your first product."
+                        } else {
+                            "Try a different search term."
+                        },
+                    )
+                }
                 else -> {
-                    LazyColumn(
-                        state = listState,
+                    PullToRefreshBox(
+                        isRefreshing = uiState.isLoading,
+                        onRefresh = viewModel::refresh,
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        items(uiState.products, key = { it.id }) { product ->
-                            ProductRow(
-                                product = product,
-                                onClick = { onProductClick(product.id) },
-                                showDelete = isAdmin,
-                                onDeleteClick = { pendingDeleteId = product.id },
-                            )
-                        }
-                        if (uiState.isLoadingMore) {
-                            item {
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                ) {
-                                    CircularProgressIndicator(modifier = Modifier.padding(8.dp))
+                        LazyColumn(
+                            state = listState,
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            items(uiState.products, key = { it.id }) { product ->
+                                ProductRow(
+                                    product = product,
+                                    onClick = { onProductClick(product.id) },
+                                    showDelete = isAdmin,
+                                    onDeleteClick = { pendingDeleteId = product.id },
+                                    modifier = Modifier.animateItem(),
+                                )
+                            }
+                            if (uiState.isLoadingMore) {
+                                item {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                    ) {
+                                        CircularProgressIndicator(modifier = Modifier.padding(8.dp))
+                                    }
                                 }
                             }
                         }
@@ -169,10 +192,11 @@ private fun ProductRow(
     onClick: () -> Unit,
     showDelete: Boolean,
     onDeleteClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     AppCard(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
     ) {
         Row(

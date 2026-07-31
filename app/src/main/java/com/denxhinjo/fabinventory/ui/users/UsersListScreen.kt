@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,9 +21,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.denxhinjo.fabinventory.data.remote.dto.UserResponse
 import com.denxhinjo.fabinventory.ui.common.AppCard
+import com.denxhinjo.fabinventory.ui.common.EmptyState
 import com.denxhinjo.fabinventory.ui.common.FullScreenError
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
 
@@ -47,9 +53,18 @@ fun UsersListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var pendingDeleteId by remember { mutableStateOf<Int?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(uiState.deleteError) {
+        uiState.deleteError?.let { error ->
+            snackbarHostState.showSnackbar(error)
+            viewModel.dismissDeleteError()
+        }
+    }
 
     Scaffold(
         modifier = modifier,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("Users") },
@@ -73,14 +88,17 @@ fun UsersListScreen(
                 onRetry = viewModel::load,
                 modifier = Modifier.padding(padding),
             )
-            else -> Column(modifier = Modifier.padding(padding).fillMaxSize()) {
-                uiState.deleteError?.let { error ->
-                    Text(
-                        text = error,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    )
-                }
+            uiState.users.isEmpty() -> EmptyState(
+                icon = Icons.Filled.People,
+                title = "No users yet",
+                subtitle = "Tap + to create the first account.",
+                modifier = Modifier.padding(padding),
+            )
+            else -> PullToRefreshBox(
+                isRefreshing = uiState.isLoading,
+                onRefresh = viewModel::load,
+                modifier = Modifier.padding(padding).fillMaxSize(),
+            ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(16.dp),
@@ -90,6 +108,7 @@ fun UsersListScreen(
                             user = user,
                             onClick = { onUserClick(user.id) },
                             onDeleteClick = { pendingDeleteId = user.id },
+                            modifier = Modifier.animateItem(),
                         )
                     }
                 }
@@ -117,10 +136,15 @@ fun UsersListScreen(
 }
 
 @Composable
-private fun UserRow(user: UserResponse, onClick: () -> Unit, onDeleteClick: () -> Unit) {
+private fun UserRow(
+    user: UserResponse,
+    onClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     AppCard(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp),
     ) {
