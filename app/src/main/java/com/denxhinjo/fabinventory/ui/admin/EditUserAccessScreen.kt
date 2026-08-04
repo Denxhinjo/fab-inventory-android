@@ -25,9 +25,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.LocationResponse
 import com.denxhinjo.fabinventory.ui.common.AppCard
 import com.denxhinjo.fabinventory.ui.common.FullScreenError
@@ -51,10 +53,10 @@ fun EditUserAccessScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text(uiState.userName.ifBlank { "Manage access" }) },
+                title = { Text(uiState.userName.ifBlank { stringResource(R.string.edit_user_access_title_fallback) }) },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Cancel")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_cancel))
                     }
                 },
             )
@@ -63,13 +65,13 @@ fun EditUserAccessScreen(
         when {
             uiState.isLoading -> FullScreenLoading(modifier = Modifier.padding(padding))
             uiState.error != null && uiState.allLocations.isEmpty() -> FullScreenError(
-                message = uiState.error ?: "Something went wrong",
+                message = uiState.error ?: stringResource(R.string.common_something_wrong),
                 onRetry = viewModel::load,
                 modifier = Modifier.padding(padding),
             )
             else -> Column(modifier = Modifier.padding(padding).fillMaxSize()) {
                 Text(
-                    "Warehouses this user can add or edit products in:",
+                    stringResource(R.string.edit_user_access_description),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(16.dp),
                 )
@@ -106,7 +108,7 @@ fun EditUserAccessScreen(
                     if (uiState.isSaving) {
                         CircularProgressIndicator(modifier = Modifier.padding(4.dp))
                     } else {
-                        Text("Save access")
+                        Text(stringResource(R.string.edit_user_access_save))
                     }
                 }
             }

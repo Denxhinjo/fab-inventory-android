@@ -26,9 +26,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.MovementType
 import com.denxhinjo.fabinventory.data.remote.dto.StockMovementResponse
 import com.denxhinjo.fabinventory.ui.common.AppCard
@@ -59,24 +61,24 @@ fun MovementsScreen(
 
     Scaffold(
         modifier = modifier,
-        topBar = { CenterAlignedTopAppBar(title = { Text("Stock movements") }) },
+        topBar = { CenterAlignedTopAppBar(title = { Text(stringResource(R.string.movements_title)) }) },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddClick) {
-                Icon(Icons.Filled.Add, contentDescription = "Record movement")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.movements_record_cd))
             }
         },
     ) { padding ->
         when {
             uiState.isLoading && uiState.movements.isEmpty() -> FullScreenLoading(modifier = Modifier.padding(padding))
             uiState.error != null && uiState.movements.isEmpty() -> FullScreenError(
-                message = uiState.error ?: "Something went wrong",
+                message = uiState.error ?: stringResource(R.string.common_something_wrong),
                 onRetry = viewModel::refresh,
                 modifier = Modifier.padding(padding),
             )
             uiState.movements.isEmpty() -> EmptyState(
                 icon = Icons.Filled.SwapVert,
-                title = "No movements yet",
-                subtitle = "Tap + to record a stock in, out, or adjustment.",
+                title = stringResource(R.string.movements_empty_title),
+                subtitle = stringResource(R.string.movements_empty_subtitle),
                 modifier = Modifier.padding(padding),
             )
             else -> PullToRefreshBox(
@@ -114,16 +116,16 @@ private fun MovementRow(movement: StockMovementResponse, modifier: Modifier = Mo
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
-                text = movement.product?.name ?: "Product #${movement.productId}",
+                text = movement.product?.name ?: stringResource(R.string.movements_unknown_product, movement.productId),
                 style = MaterialTheme.typography.titleMedium,
             )
             Text(
-                text = "${movement.movementType} · ${movement.quantity.trimmed()} ${movement.product?.unit ?: ""}",
+                text = "${movementTypeLabel(movement.movementType)} · ${movement.quantity.trimmed()} ${movement.product?.unit ?: ""}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = movement.movementType.colorFor(),
             )
             Text(
-                text = "${movement.movementDate} · ${movement.user?.fullName ?: "Unknown"}",
+                text = "${movement.movementDate} · ${movement.user?.fullName ?: stringResource(R.string.movements_unknown_user)}",
                 style = MaterialTheme.typography.bodyMedium,
             )
             movement.reason?.takeIf { it.isNotBlank() }?.let {
@@ -131,6 +133,14 @@ private fun MovementRow(movement: StockMovementResponse, modifier: Modifier = Mo
             }
         }
     }
+}
+
+@Composable
+internal fun movementTypeLabel(type: String): String = when (type) {
+    MovementType.STOCK_IN -> stringResource(R.string.movement_type_stock_in)
+    MovementType.STOCK_OUT -> stringResource(R.string.movement_type_stock_out)
+    MovementType.ADJUSTMENT -> stringResource(R.string.movement_type_adjustment)
+    else -> type
 }
 
 @Composable

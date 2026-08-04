@@ -36,11 +36,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.ProductResponse
 import com.denxhinjo.fabinventory.data.remote.resolveMediaUrl
 import com.denxhinjo.fabinventory.ui.common.AppCard
@@ -73,21 +75,21 @@ fun ProductDetailScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text("Product") },
+                title = { Text(stringResource(R.string.product_detail_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
                 actions = {
                     val state = uiState
                     if (state is UiState.Success) {
                         IconButton(onClick = { onEdit(state.data.id) }) {
-                            Icon(Icons.Filled.Edit, contentDescription = "Edit product")
+                            Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.product_detail_edit_cd))
                         }
                         if (isAdmin) {
                             IconButton(onClick = { showDeleteConfirm = true }) {
-                                Icon(Icons.Filled.Delete, contentDescription = "Delete product")
+                                Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.product_detail_delete_cd))
                             }
                         }
                     }
@@ -122,8 +124,8 @@ fun ProductDetailScreen(
     if (showDeleteConfirm) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("Delete this product?") },
-            text = { Text("This can't be undone.") },
+            title = { Text(stringResource(R.string.product_detail_delete_title)) },
+            text = { Text(stringResource(R.string.common_cannot_be_undone)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -132,11 +134,15 @@ fun ProductDetailScreen(
                     },
                     enabled = !isDeleting,
                 ) {
-                    if (isDeleting) CircularProgressIndicator(modifier = Modifier.padding(2.dp)) else Text("Delete")
+                    if (isDeleting) {
+                        CircularProgressIndicator(modifier = Modifier.padding(2.dp))
+                    } else {
+                        Text(stringResource(R.string.common_delete))
+                    }
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") }
+                TextButton(onClick = { showDeleteConfirm = false }) { Text(stringResource(R.string.common_cancel)) }
             },
         )
     }
@@ -157,7 +163,7 @@ private fun ProductDetailContent(
         resolveMediaUrl(product.imageUrl)?.let { url ->
             AsyncImage(
                 model = url,
-                contentDescription = "${product.name} photo",
+                contentDescription = stringResource(R.string.product_detail_photo_cd, product.name),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
@@ -169,26 +175,29 @@ private fun ProductDetailContent(
 
         Text(product.name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         product.sku?.let {
-            Text("SKU $it", style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(R.string.product_detail_sku, it), style = MaterialTheme.typography.bodyMedium)
         }
 
         AppCard(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp)) {
             Column(modifier = Modifier.padding(16.dp)) {
-                DetailRow("Quantity", "${product.quantity.trimmed()} ${product.unit}")
-                DetailRow("Minimum stock level", "${product.minStockLevel.trimmed()} ${product.unit}")
-                product.unitPrice?.let { DetailRow("Unit price", it.trimmed()) }
-                DetailRow("Status", product.status.replaceFirstChar { it.uppercase() })
-                product.category?.let { DetailRow("Category", it.name) }
-                product.location?.let { DetailRow("Location", it.name) }
-                product.supplier?.let { DetailRow("Supplier", it.name) }
+                DetailRow(stringResource(R.string.product_detail_quantity_label), "${product.quantity.trimmed()} ${product.unit}")
+                DetailRow(
+                    stringResource(R.string.product_detail_min_stock_label),
+                    "${product.minStockLevel.trimmed()} ${product.unit}",
+                )
+                product.unitPrice?.let { DetailRow(stringResource(R.string.product_detail_unit_price_label), it.trimmed()) }
+                DetailRow(stringResource(R.string.product_detail_status_label), productStatusLabel(product.status))
+                product.category?.let { DetailRow(stringResource(R.string.product_detail_category_label), it.name) }
+                product.location?.let { DetailRow(stringResource(R.string.product_detail_warehouse_label), it.name) }
+                product.supplier?.let { DetailRow(stringResource(R.string.product_detail_supplier_label), it.name) }
             }
         }
 
         product.description?.takeIf { it.isNotBlank() }?.let { description ->
             Text(
-                text = "Description",
+                text = stringResource(R.string.product_detail_description_label),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(top = 24.dp, bottom = 4.dp),
             )
@@ -197,7 +206,7 @@ private fun ProductDetailContent(
 
         product.notes?.takeIf { it.isNotBlank() }?.let { notes ->
             Text(
-                text = "Notes",
+                text = stringResource(R.string.product_detail_notes_label),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(top = 16.dp, bottom = 4.dp),
             )
@@ -206,7 +215,7 @@ private fun ProductDetailContent(
 
         if (product.isLowStock) {
             Text(
-                text = "This item is at or below its minimum stock level.",
+                text = stringResource(R.string.product_detail_low_stock_warning),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 16.dp),
@@ -219,7 +228,7 @@ private fun ProductDetailContent(
                 .fillMaxWidth()
                 .padding(top = 24.dp),
         ) {
-            Text("Record stock movement")
+            Text(stringResource(R.string.product_detail_record_movement))
         }
     }
 }

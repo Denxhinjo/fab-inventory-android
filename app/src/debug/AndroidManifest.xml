@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Merged into debug builds only. A local dev backend (LAN IP, emulator
+     alias, etc.) typically isn't behind TLS, so cleartext is allowed here
+     and nowhere else. Release builds inherit the secure default from
+     src/main/AndroidManifest.xml and must talk to a real HTTPS backend.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application android:usesCleartextTraffic="true" />
+
+</manifest>

@@ -1,3 +1,248 @@
 <resources>
     <string name="app_name">FAB Inventory</string>
+
+    <!--
+         i18n scaffolding: the web app supports English/Albanian
+         (frontend/src/i18n/locales), and Android does too. Every screen
+         under ui/ has been extracted to stringResource(R.string.key) calls
+         backed by this file and values-sq/strings.xml, grouped below by
+         screen with a short comment per section.
+    -->
+
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_products">Products</string>
+    <string name="nav_movements">Movements</string>
+
+    <string name="common_save">Save</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_loading">Loading…</string>
+    <string name="common_retry">Retry</string>
+    <string name="common_back">Back</string>
+    <string name="common_add">Add</string>
+    <string name="common_something_wrong">Something went wrong</string>
+    <string name="common_cannot_be_undone">This can\'t be undone.</string>
+    <string name="common_save_changes">Save changes</string>
+    <string name="common_notes_optional">Notes (optional)</string>
+    <string name="common_inactive">Inactive</string>
+
+    <string name="login_subtitle">Sign in to manage stock on the go</string>
+    <string name="login_email_or_username">Email or username</string>
+    <string name="login_password">Password</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_footer">Connects to your FAB Construction IMS backend.</string>
+
+    <!-- Dashboard (DashboardScreen.kt, DashboardCharts.kt) -->
+    <string name="dashboard_greeting">Hi, %1$s</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_manage_access_cd">Manage warehouse access</string>
+    <string name="dashboard_log_out_cd">Log out</string>
+    <string name="dashboard_stock_in">Stock in</string>
+    <string name="dashboard_stock_out">Stock out</string>
+    <string name="dashboard_net_change">Net change</string>
+    <string name="dashboard_health_overview">Health overview</string>
+    <string name="dashboard_stock_health">Stock health</string>
+    <string name="dashboard_work_done">Work done</string>
+    <string name="dashboard_needs_attention">Needs attention</string>
+    <string name="dashboard_products_label">Products</string>
+    <string name="dashboard_low_stock_label">Low stock</string>
+    <string name="dashboard_warehouses_label">Warehouses</string>
+    <string name="dashboard_active_work_label">Active work</string>
+    <string name="dashboard_work_process_overview">Work process overview</string>
+    <string name="dashboard_top_moved_products">Top moved products (30 days)</string>
+    <string name="dashboard_stock_movement_14d">Stock movement (14 days)</string>
+    <string name="dashboard_products_by_category">Products by category</string>
+    <string name="dashboard_top_suppliers">Top suppliers</string>
+    <string name="dashboard_supplier_products_count">%1$d products</string>
+    <string name="dashboard_add_product">Add product</string>
+    <string name="dashboard_record_movement">Record movement</string>
+    <string name="dashboard_low_stock_items">Low stock items</string>
+    <string name="dashboard_recent_activity">Recent activity</string>
+    <string name="dashboard_total_inventory_value">Total Inventory Value</string>
+    <string name="dashboard_stock_health_pct">Stock health: %1$d%% of products above minimum</string>
+    <string name="dashboard_movements_this_week">Movements this week</string>
+    <string name="dashboard_vs_last_week">%1$s vs last week</string>
+    <string name="dashboard_low_stock_row">%1$s %2$s left (min %3$s)</string>
+    <string name="dashboard_status_not_started">Not Started</string>
+    <string name="dashboard_status_started">Started</string>
+    <string name="dashboard_status_in_process">In Process</string>
+    <string name="dashboard_status_done">Done</string>
+    <string name="chart_not_enough_data">Not enough data yet</string>
+    <string name="chart_no_data">No data</string>
+    <string name="chart_no_movement_data">No movement data yet</string>
+
+    <!-- Products list (ProductsScreen.kt) -->
+    <string name="products_title">Products</string>
+    <string name="products_add_cd">Add product</string>
+    <string name="products_search_label">Search products</string>
+    <string name="products_empty_title">No products yet</string>
+    <string name="products_empty_title_no_matches">No matches</string>
+    <string name="products_empty_subtitle">Tap + to add your first product.</string>
+    <string name="products_empty_subtitle_no_matches">Try a different search term.</string>
+    <string name="products_delete_title">Delete %1$s?</string>
+    <string name="products_delete_fallback">this product</string>
+    <string name="products_delete_cd">Delete product</string>
+    <string name="products_row_sku">SKU %1$s</string>
+
+    <!-- Product form (ProductFormScreen.kt) -->
+    <string name="product_form_edit_title">Edit product</string>
+    <string name="product_form_new_title">New product</string>
+    <string name="product_form_no_warehouse_access">You haven\'t been granted access to any warehouse yet. Ask an admin to grant you access before adding products.</string>
+    <string name="product_form_name_label">Name</string>
+    <string name="product_form_sku_label">SKU (optional)</string>
+    <string name="product_form_photo_label">Photo</string>
+    <string name="product_form_photo_cd">Product photo</string>
+    <string name="product_form_camera">Camera</string>
+    <string name="product_form_gallery">Gallery</string>
+    <string name="product_form_warehouse_label">Warehouse</string>
+    <string name="product_form_quantity_label">Quantity</string>
+    <string name="product_form_quantity_hint">Record a stock movement to change quantity</string>
+    <string name="product_form_unit_label">Unit</string>
+    <string name="product_form_min_stock_label">Min stock level</string>
+    <string name="product_form_unit_price_label">Unit price (optional)</string>
+    <string name="product_form_status_label">Status</string>
+    <string name="product_form_category_label">Category (optional)</string>
+    <string name="product_form_none">None</string>
+    <string name="product_form_supplier_label">Supplier (optional)</string>
+    <string name="product_form_description_label">Description (optional)</string>
+    <string name="product_form_create">Create product</string>
+    <string name="product_status_active">Active</string>
+    <string name="product_status_inactive">Inactive</string>
+    <string name="product_status_discontinued">Discontinued</string>
+
+    <!-- Product detail (ProductDetailScreen.kt) -->
+    <string name="product_detail_title">Product</string>
+    <string name="product_detail_edit_cd">Edit product</string>
+    <string name="product_detail_delete_cd">Delete product</string>
+    <string name="product_detail_photo_cd">%1$s photo</string>
+    <string name="product_detail_sku">SKU %1$s</string>
+    <string name="product_detail_quantity_label">Quantity</string>
+    <string name="product_detail_min_stock_label">Minimum stock level</string>
+    <string name="product_detail_unit_price_label">Unit price</string>
+    <string name="product_detail_status_label">Status</string>
+    <string name="product_detail_category_label">Category</string>
+    <string name="product_detail_warehouse_label">Warehouse</string>
+    <string name="product_detail_supplier_label">Supplier</string>
+    <string name="product_detail_description_label">Description</string>
+    <string name="product_detail_notes_label">Notes</string>
+    <string name="product_detail_low_stock_warning">This item is at or below its minimum stock level.</string>
+    <string name="product_detail_record_movement">Record stock movement</string>
+    <string name="product_detail_delete_title">Delete this product?</string>
+
+    <!-- Movements list (MovementsScreen.kt) -->
+    <string name="movements_title">Stock movements</string>
+    <string name="movements_record_cd">Record movement</string>
+    <string name="movements_empty_title">No movements yet</string>
+    <string name="movements_empty_subtitle">Tap + to record a stock in, out, or adjustment.</string>
+    <string name="movements_unknown_product">Product #%1$d</string>
+    <string name="movements_unknown_user">Unknown</string>
+    <string name="movement_type_stock_in">Stock In</string>
+    <string name="movement_type_stock_out">Stock Out</string>
+    <string name="movement_type_adjustment">Adjustment</string>
+
+    <!-- Create movement (CreateMovementScreen.kt) -->
+    <string name="create_movement_title">Record stock movement</string>
+    <string name="create_movement_select_product">Select a product</string>
+    <string name="create_movement_qty_label">Quantity (%1$s)</string>
+    <string name="create_movement_reason_label">Reason (optional)</string>
+    <string name="create_movement_save">Save movement</string>
+    <string name="create_movement_in_stock">%1$s %2$s in stock</string>
+    <string name="create_movement_currently_in_stock">%1$s %2$s currently in stock</string>
+    <string name="create_movement_change_product_cd">Change product</string>
+    <string name="create_movement_type_label">Movement type</string>
+
+    <!-- Admin home (AdminHomeScreen.kt) -->
+    <string name="admin_home_title">Admin</string>
+    <string name="admin_home_users_title">Users</string>
+    <string name="admin_home_users_subtitle">Create, edit, deactivate, or delete user accounts</string>
+    <string name="admin_home_access_title">Warehouse access</string>
+    <string name="admin_home_access_subtitle">Choose which warehouses each user can add or edit products in</string>
+    <string name="admin_home_warehouses_title">Warehouses</string>
+    <string name="admin_home_warehouses_subtitle">Add, edit, or remove warehouses</string>
+    <string name="admin_home_suppliers_title">Suppliers</string>
+    <string name="admin_home_suppliers_subtitle">Add, edit, or remove suppliers</string>
+
+    <!-- Manage access (ManageAccessScreen.kt) -->
+    <string name="manage_access_title">Manage warehouse access</string>
+    <string name="manage_access_empty">No non-admin users found.</string>
+
+    <!-- Edit user access (EditUserAccessScreen.kt) -->
+    <string name="edit_user_access_title_fallback">Manage access</string>
+    <string name="edit_user_access_description">Warehouses this user can add or edit products in:</string>
+    <string name="edit_user_access_save">Save access</string>
+
+    <!-- Locations list (LocationsListScreen.kt) -->
+    <string name="locations_title">Warehouses</string>
+    <string name="locations_add_cd">Add warehouse</string>
+    <string name="locations_empty_title">No warehouses yet</string>
+    <string name="locations_empty_subtitle">Tap + to add your first warehouse location.</string>
+    <string name="locations_delete_title">Delete %1$s?</string>
+    <string name="locations_delete_fallback">this warehouse</string>
+    <string name="locations_delete_body">This only works if it has no products in it.</string>
+    <string name="locations_delete_cd">Delete warehouse</string>
+    <string name="locations_row_products_count">%1$d products</string>
+
+    <!-- Location form (LocationFormScreen.kt) -->
+    <string name="location_form_edit_title">Edit warehouse</string>
+    <string name="location_form_new_title">New warehouse</string>
+    <string name="location_form_name_label">Name</string>
+    <string name="location_form_city_label">City (optional)</string>
+    <string name="location_form_address_label">Address (optional)</string>
+    <string name="location_form_manager_label">Manager name (optional)</string>
+    <string name="location_form_email_label">Contact email (optional)</string>
+    <string name="location_form_phone_label">Contact phone (optional)</string>
+    <string name="location_form_create">Create warehouse</string>
+
+    <!-- Suppliers list (SuppliersListScreen.kt) -->
+    <string name="suppliers_title">Suppliers</string>
+    <string name="suppliers_add_cd">Add supplier</string>
+    <string name="suppliers_empty_title">No suppliers yet</string>
+    <string name="suppliers_empty_subtitle">Tap + to add your first supplier.</string>
+    <string name="suppliers_delete_title">Delete %1$s?</string>
+    <string name="suppliers_delete_fallback">this supplier</string>
+    <string name="suppliers_delete_cd">Delete supplier</string>
+    <string name="suppliers_row_products_count">%1$d products</string>
+
+    <!-- Supplier form (SupplierFormScreen.kt) -->
+    <string name="supplier_form_edit_title">Edit supplier</string>
+    <string name="supplier_form_new_title">New supplier</string>
+    <string name="supplier_form_name_label">Name</string>
+    <string name="supplier_form_contact_name_label">Contact name (optional)</string>
+    <string name="supplier_form_email_label">Email (optional)</string>
+    <string name="supplier_form_phone_label">Phone (optional)</string>
+    <string name="supplier_form_city_label">City (optional)</string>
+    <string name="supplier_form_address_label">Address (optional)</string>
+    <string name="supplier_form_create">Create supplier</string>
+
+    <!-- Users list (UsersListScreen.kt) -->
+    <string name="users_title">Users</string>
+    <string name="users_add_cd">Add user</string>
+    <string name="users_empty_title">No users yet</string>
+    <string name="users_empty_subtitle">Tap + to create the first account.</string>
+    <string name="users_delete_title">Delete %1$s?</string>
+    <string name="users_delete_fallback">this user</string>
+    <string name="users_delete_cd">Delete user</string>
+    <string name="users_role_admin">Admin</string>
+    <string name="users_role_user">User</string>
+
+    <!-- User form (UserFormScreen.kt) -->
+    <string name="user_form_edit_title">Edit user</string>
+    <string name="user_form_new_title">New user</string>
+    <string name="user_form_full_name_label">Full name</string>
+    <string name="user_form_email_label">Email</string>
+    <string name="user_form_username_label">Username</string>
+    <string name="user_form_phone_label">Phone (optional)</string>
+    <string name="user_form_password_new_label">New password (optional)</string>
+    <string name="user_form_password_label">Password</string>
+    <string name="user_form_role_label">Role</string>
+    <string name="user_form_active_label">Active</string>
+    <string name="user_form_active_hint">Inactive users can\'t log in</string>
+    <string name="user_form_create">Create user</string>
+
+    <!-- Access denied (RequireAdmin.kt) -->
+    <string name="access_denied_title">Access denied</string>
+    <string name="access_denied_heading">You don\'t have permission to view this page</string>
+    <string name="access_denied_subtitle">This section is only available to admins.</string>
+    <string name="access_denied_go_back">Go back</string>
 </resources>

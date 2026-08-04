@@ -12,13 +12,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FabInventory"
-        android:usesCleartextTraffic="true">
+        android:theme="@style/Theme.FabInventory">
 
         <!--
-             usesCleartextTraffic is enabled because the demo backend runs over
-             plain HTTP on localhost / the developer's LAN (see README) rather
-             than behind TLS; a production deployment would remove this.
+             Cleartext (plain HTTP) traffic is disabled here for every build.
+             Debug builds re-enable it via src/debug/AndroidManifest.xml,
+             since a local dev backend typically isn't behind TLS. Release
+             builds must talk to a real HTTPS backend.
         -->
 
         <activity

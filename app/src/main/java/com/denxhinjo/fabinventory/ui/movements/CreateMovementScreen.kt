@@ -30,10 +30,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.MovementType
 import com.denxhinjo.fabinventory.data.remote.dto.ProductResponse
 import com.denxhinjo.fabinventory.ui.common.AppCard
@@ -56,10 +58,10 @@ fun CreateMovementScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text("Record stock movement") },
+                title = { Text(stringResource(R.string.create_movement_title)) },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Cancel")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_cancel))
                     }
                 },
             )
@@ -92,7 +94,7 @@ fun CreateMovementScreen(
                 OutlinedTextField(
                     value = uiState.quantity,
                     onValueChange = viewModel::onQuantityChange,
-                    label = { Text("Quantity (${selected.unit})") },
+                    label = { Text(stringResource(R.string.create_movement_qty_label, selected.unit)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier
@@ -103,7 +105,7 @@ fun CreateMovementScreen(
                 OutlinedTextField(
                     value = uiState.reason,
                     onValueChange = viewModel::onReasonChange,
-                    label = { Text("Reason (optional)") },
+                    label = { Text(stringResource(R.string.create_movement_reason_label)) },
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -113,7 +115,7 @@ fun CreateMovementScreen(
                 OutlinedTextField(
                     value = uiState.notes,
                     onValueChange = viewModel::onNotesChange,
-                    label = { Text("Notes (optional)") },
+                    label = { Text(stringResource(R.string.common_notes_optional)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 12.dp),
@@ -137,7 +139,7 @@ fun CreateMovementScreen(
                     if (uiState.isSubmitting) {
                         CircularProgressIndicator(modifier = Modifier.padding(4.dp))
                     } else {
-                        Text("Save movement")
+                        Text(stringResource(R.string.create_movement_save))
                     }
                 }
             }
@@ -153,11 +155,11 @@ private fun ProductPicker(
     isSearching: Boolean,
     onSelect: (ProductResponse) -> Unit,
 ) {
-    Text("Select a product", style = MaterialTheme.typography.titleMedium)
+    Text(stringResource(R.string.create_movement_select_product), style = MaterialTheme.typography.titleMedium)
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
-        label = { Text("Search products") },
+        label = { Text(stringResource(R.string.products_search_label)) },
         singleLine = true,
         modifier = Modifier
             .fillMaxWidth()
@@ -182,7 +184,7 @@ private fun ProductPicker(
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(product.name, style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "${product.quantity.trimmed()} ${product.unit} in stock",
+                        stringResource(R.string.create_movement_in_stock, product.quantity.trimmed(), product.unit),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
@@ -202,12 +204,12 @@ private fun SelectedProductCard(product: ProductResponse, onClear: () -> Unit) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(product.name, style = MaterialTheme.typography.titleMedium)
                 Text(
-                    "${product.quantity.trimmed()} ${product.unit} currently in stock",
+                    stringResource(R.string.create_movement_currently_in_stock, product.quantity.trimmed(), product.unit),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
             IconButton(onClick = onClear) {
-                Icon(Icons.Filled.Close, contentDescription = "Change product")
+                Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.create_movement_change_product_cd))
             }
         }
     }
@@ -216,7 +218,7 @@ private fun SelectedProductCard(product: ProductResponse, onClear: () -> Unit) {
 @Composable
 private fun MovementTypeDropdown(selected: String, onSelect: (String) -> Unit) {
     Text(
-        text = "Movement type",
+        text = stringResource(R.string.create_movement_type_label),
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
     )
@@ -225,7 +227,7 @@ private fun MovementTypeDropdown(selected: String, onSelect: (String) -> Unit) {
             FilterChip(
                 selected = selected == type,
                 onClick = { onSelect(type) },
-                label = { Text(type) },
+                label = { Text(movementTypeLabel(type)) },
                 modifier = Modifier.padding(end = 8.dp),
             )
         }

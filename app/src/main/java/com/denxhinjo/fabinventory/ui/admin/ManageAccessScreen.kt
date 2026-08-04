@@ -19,9 +19,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.UserResponse
 import com.denxhinjo.fabinventory.ui.common.AppCard
 import com.denxhinjo.fabinventory.ui.common.FullScreenError
@@ -41,10 +43,10 @@ fun ManageAccessScreen(
         modifier = modifier,
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Manage warehouse access") },
+                title = { Text(stringResource(R.string.manage_access_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
             )
@@ -53,12 +55,12 @@ fun ManageAccessScreen(
         when {
             uiState.isLoading -> FullScreenLoading(modifier = Modifier.padding(padding))
             uiState.error != null -> FullScreenError(
-                message = uiState.error ?: "Something went wrong",
+                message = uiState.error ?: stringResource(R.string.common_something_wrong),
                 onRetry = viewModel::load,
                 modifier = Modifier.padding(padding),
             )
             uiState.users.isEmpty() -> Column(modifier = Modifier.padding(padding).padding(24.dp)) {
-                Text("No non-admin users found.", style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.manage_access_empty), style = MaterialTheme.typography.bodyMedium)
             }
             else -> LazyColumn(
                 modifier = Modifier

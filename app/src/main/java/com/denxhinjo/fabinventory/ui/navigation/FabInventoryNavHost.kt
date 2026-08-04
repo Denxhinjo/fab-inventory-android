@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.denxhinjo.fabinventory.ui.admin.AdminHomeScreen
 import com.denxhinjo.fabinventory.ui.admin.EditUserAccessScreen
 import com.denxhinjo.fabinventory.ui.admin.ManageAccessScreen
+import com.denxhinjo.fabinventory.ui.common.RequireAdmin
 import com.denxhinjo.fabinventory.ui.dashboard.DashboardScreen
 import com.denxhinjo.fabinventory.ui.locations.LocationFormScreen
 import com.denxhinjo.fabinventory.ui.locations.LocationsListScreen
@@ -114,38 +115,46 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
         }
 
         composable(Routes.ADMIN_HOME) {
-            AdminHomeScreen(
-                onBack = { navController.popBackStack() },
-                onManageAccess = { navController.navigate(Routes.MANAGE_ACCESS) },
-                onManageLocations = { navController.navigate(Routes.LOCATIONS_LIST) },
-                onManageSuppliers = { navController.navigate(Routes.SUPPLIERS_LIST) },
-                onManageUsers = { navController.navigate(Routes.USERS_LIST) },
-            )
+            RequireAdmin(onBack = { navController.popBackStack() }) {
+                AdminHomeScreen(
+                    onBack = { navController.popBackStack() },
+                    onManageAccess = { navController.navigate(Routes.MANAGE_ACCESS) },
+                    onManageLocations = { navController.navigate(Routes.LOCATIONS_LIST) },
+                    onManageSuppliers = { navController.navigate(Routes.SUPPLIERS_LIST) },
+                    onManageUsers = { navController.navigate(Routes.USERS_LIST) },
+                )
+            }
         }
 
         composable(Routes.MANAGE_ACCESS) {
-            ManageAccessScreen(
-                onBack = { navController.popBackStack() },
-                onUserClick = { userId -> navController.navigate(Routes.editUserAccess(userId)) },
-            )
+            RequireAdmin(onBack = { navController.popBackStack() }) {
+                ManageAccessScreen(
+                    onBack = { navController.popBackStack() },
+                    onUserClick = { userId -> navController.navigate(Routes.editUserAccess(userId)) },
+                )
+            }
         }
 
         composable(
             route = Routes.EDIT_USER_ACCESS,
             arguments = listOf(navArgument(Routes.ARG_USER_ID) { type = NavType.IntType }),
         ) {
-            EditUserAccessScreen(
-                onDone = { navController.popBackStack() },
-                onCancel = { navController.popBackStack() },
-            )
+            RequireAdmin(onBack = { navController.popBackStack() }) {
+                EditUserAccessScreen(
+                    onDone = { navController.popBackStack() },
+                    onCancel = { navController.popBackStack() },
+                )
+            }
         }
 
         composable(Routes.LOCATIONS_LIST) {
-            LocationsListScreen(
-                onBack = { navController.popBackStack() },
-                onAddClick = { navController.navigate(Routes.locationForm()) },
-                onLocationClick = { id -> navController.navigate(Routes.locationForm(id)) },
-            )
+            RequireAdmin(onBack = { navController.popBackStack() }) {
+                LocationsListScreen(
+                    onBack = { navController.popBackStack() },
+                    onAddClick = { navController.navigate(Routes.locationForm()) },
+                    onLocationClick = { id -> navController.navigate(Routes.locationForm(id)) },
+                )
+            }
         }
 
         composable(
@@ -158,18 +167,22 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
                 },
             ),
         ) {
-            LocationFormScreen(
-                onDone = { navController.popBackStack() },
-                onCancel = { navController.popBackStack() },
-            )
+            RequireAdmin(onBack = { navController.popBackStack() }) {
+                LocationFormScreen(
+                    onDone = { navController.popBackStack() },
+                    onCancel = { navController.popBackStack() },
+                )
+            }
         }
 
         composable(Routes.SUPPLIERS_LIST) {
-            SuppliersListScreen(
-                onBack = { navController.popBackStack() },
-                onAddClick = { navController.navigate(Routes.supplierForm()) },
-                onSupplierClick = { id -> navController.navigate(Routes.supplierForm(id)) },
-            )
+            RequireAdmin(onBack = { navController.popBackStack() }) {
+                SuppliersListScreen(
+                    onBack = { navController.popBackStack() },
+                    onAddClick = { navController.navigate(Routes.supplierForm()) },
+                    onSupplierClick = { id -> navController.navigate(Routes.supplierForm(id)) },
+                )
+            }
         }
 
         composable(
@@ -182,18 +195,22 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
                 },
             ),
         ) {
-            SupplierFormScreen(
-                onDone = { navController.popBackStack() },
-                onCancel = { navController.popBackStack() },
-            )
+            RequireAdmin(onBack = { navController.popBackStack() }) {
+                SupplierFormScreen(
+                    onDone = { navController.popBackStack() },
+                    onCancel = { navController.popBackStack() },
+                )
+            }
         }
 
         composable(Routes.USERS_LIST) {
-            UsersListScreen(
-                onBack = { navController.popBackStack() },
-                onAddClick = { navController.navigate(Routes.userForm()) },
-                onUserClick = { id -> navController.navigate(Routes.userForm(id)) },
-            )
+            RequireAdmin(onBack = { navController.popBackStack() }) {
+                UsersListScreen(
+                    onBack = { navController.popBackStack() },
+                    onAddClick = { navController.navigate(Routes.userForm()) },
+                    onUserClick = { id -> navController.navigate(Routes.userForm(id)) },
+                )
+            }
         }
 
         composable(
@@ -206,10 +223,12 @@ fun FabInventoryNavHost(navController: NavHostController = rememberNavController
                 },
             ),
         ) {
-            UserFormScreen(
-                onDone = { navController.popBackStack() },
-                onCancel = { navController.popBackStack() },
-            )
+            RequireAdmin(onBack = { navController.popBackStack() }) {
+                UserFormScreen(
+                    onDone = { navController.popBackStack() },
+                    onCancel = { navController.popBackStack() },
+                )
+            }
         }
     }
 }

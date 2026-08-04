@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +8,18 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
 }
+
+// Per-developer debug backend URL, read from local.properties (already
+// gitignored, already used for sdk.dir) instead of hardcoded here -- each
+// dev on a different LAN just sets their own value instead of editing this
+// file (and accidentally committing their IP).
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(FileInputStream(localPropertiesFile))
+    }
+}
+val lanBaseUrl = localProperties.getProperty("LAN_BASE_URL") ?: "http://192.168.1.16:8000/"
 
 android {
     namespace = "com.denxhinjo.fabinventory"
@@ -18,20 +33,24 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        // Points at the dev machine's LAN IP so a physical phone on the same Wi-Fi
-        // can reach the docker-compose backend. This IP is DHCP-assigned and can
-        // change -- if the app can't connect, check the host's current IP
-        // (ipconfig / Wi-Fi adapter) and update this.
-        // For the Android *emulator* instead of a physical device, use
-        // "http://10.0.2.2:8000/" -- the emulator's fixed alias for host localhost.
-        buildConfigField("String", "DEFAULT_BASE_URL", "\"http://192.168.1.16:8000/\"")
     }
 
     buildTypes {
+        debug {
+            // Points at the dev machine's LAN IP so a physical phone on the same
+            // Wi-Fi can reach the docker-compose backend. Set LAN_BASE_URL in
+            // local.properties to override (e.g. `LAN_BASE_URL=http://10.0.2.2:8000/`
+            // for the emulator, which uses that fixed alias for host localhost) --
+            // falls back to the value below if unset. This IP is DHCP-assigned and
+            // can change; check the host's current IP (ipconfig / Wi-Fi adapter).
+            buildConfigField("String", "DEFAULT_BASE_URL", "\"$lanBaseUrl\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // No safe default on purpose -- set this to the real production
+            // backend URL (HTTPS) before building/shipping a release APK.
+            buildConfigField("String", "DEFAULT_BASE_URL", "\"https://api.fabconstruction.example.com/\"")
         }
     }
 

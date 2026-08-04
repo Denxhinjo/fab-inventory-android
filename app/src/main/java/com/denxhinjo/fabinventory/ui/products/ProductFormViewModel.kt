@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.denxhinjo.fabinventory.data.remote.CloudinaryUploader
+import com.denxhinjo.fabinventory.data.remote.ImageUploader
 import com.denxhinjo.fabinventory.data.remote.dto.CategorySummary
 import com.denxhinjo.fabinventory.data.remote.dto.LocationResponse
 import com.denxhinjo.fabinventory.data.remote.dto.SupplierSummary
@@ -61,7 +61,7 @@ class ProductFormViewModel @Inject constructor(
     private val productRepository: ProductRepository,
     private val locationRepository: LocationRepository,
     private val authRepository: AuthRepository,
-    private val cloudinaryUploader: CloudinaryUploader,
+    private val imageUploader: ImageUploader,
 ) : ViewModel() {
 
     private val editProductId: Int? = savedStateHandle.get<String>(Routes.ARG_EDIT_PRODUCT_ID)?.toIntOrNull()
@@ -137,7 +137,7 @@ class ProductFormViewModel @Inject constructor(
     fun onImagePicked(uri: Uri) {
         _uiState.update { it.copy(localImageUri = uri, imageError = null, isUploadingImage = true) }
         viewModelScope.launch {
-            cloudinaryUploader.uploadImage(uri).fold(
+            imageUploader.uploadImage(uri).fold(
                 onSuccess = { url -> _uiState.update { it.copy(isUploadingImage = false, imageUrl = url) } },
                 onFailure = { e ->
                     _uiState.update {

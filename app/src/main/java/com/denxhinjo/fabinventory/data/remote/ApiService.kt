@@ -17,7 +17,10 @@ import com.denxhinjo.fabinventory.data.remote.dto.SupplierSummary
 import com.denxhinjo.fabinventory.data.remote.dto.TokenResponse
 import com.denxhinjo.fabinventory.data.remote.dto.UserCreateRequest
 import com.denxhinjo.fabinventory.data.remote.dto.UserResponse
+import com.denxhinjo.fabinventory.data.remote.dto.UploadImageResponse
 import com.denxhinjo.fabinventory.data.remote.dto.UserUpdateRequest
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -25,8 +28,10 @@ import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -158,6 +163,13 @@ interface ApiService {
         @Path("id") userId: Int,
         @Body request: LocationIdsRequest,
     ): List<LocationResponse>
+
+    @Multipart
+    @POST("api/uploads/image")
+    suspend fun uploadImage(
+        @Part file: MultipartBody.Part,
+        @Part("folder") folder: RequestBody,
+    ): UploadImageResponse
 
     @GET("api/stock-movements")
     suspend fun getStockMovements(

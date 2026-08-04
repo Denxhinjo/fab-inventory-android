@@ -33,9 +33,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.UserResponse
 import com.denxhinjo.fabinventory.ui.common.AppCard
 import com.denxhinjo.fabinventory.ui.common.EmptyState
@@ -67,31 +69,31 @@ fun UsersListScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Users") },
+                title = { Text(stringResource(R.string.users_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddClick) {
-                Icon(Icons.Filled.Add, contentDescription = "Add user")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.users_add_cd))
             }
         },
     ) { padding ->
         when {
             uiState.isLoading -> FullScreenLoading(modifier = Modifier.padding(padding))
             uiState.error != null -> FullScreenError(
-                message = uiState.error ?: "Something went wrong",
+                message = uiState.error ?: stringResource(R.string.common_something_wrong),
                 onRetry = viewModel::load,
                 modifier = Modifier.padding(padding),
             )
             uiState.users.isEmpty() -> EmptyState(
                 icon = Icons.Filled.People,
-                title = "No users yet",
-                subtitle = "Tap + to create the first account.",
+                title = stringResource(R.string.users_empty_title),
+                subtitle = stringResource(R.string.users_empty_subtitle),
                 modifier = Modifier.padding(padding),
             )
             else -> PullToRefreshBox(
@@ -120,16 +122,23 @@ fun UsersListScreen(
         val user = uiState.users.find { it.id == id }
         AlertDialog(
             onDismissRequest = { pendingDeleteId = null },
-            title = { Text("Delete ${user?.fullName ?: "this user"}?") },
-            text = { Text("This can't be undone.") },
+            title = {
+                Text(
+                    stringResource(
+                        R.string.users_delete_title,
+                        user?.fullName ?: stringResource(R.string.users_delete_fallback),
+                    ),
+                )
+            },
+            text = { Text(stringResource(R.string.common_cannot_be_undone)) },
             confirmButton = {
                 TextButton(onClick = {
                     pendingDeleteId = null
                     viewModel.deleteUser(id)
-                }) { Text("Delete") }
+                }) { Text(stringResource(R.string.common_delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingDeleteId = null }) { Text("Cancel") }
+                TextButton(onClick = { pendingDeleteId = null }) { Text(stringResource(R.string.common_cancel)) }
             },
         )
     }
@@ -151,19 +160,28 @@ private fun UserRow(
         Row(modifier = Modifier.padding(12.dp)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(user.fullName, style = MaterialTheme.typography.titleMedium)
+                val roleLabel = userRoleLabel(user.role)
+                val inactiveSuffix = stringResource(R.string.common_inactive)
                 Text(
                     buildString {
                         append(user.email)
-                        append(" · ${user.role.replaceFirstChar { it.uppercase() }}")
-                        if (!user.isActive) append(" · Inactive")
+                        append(" · $roleLabel")
+                        if (!user.isActive) append(" · $inactiveSuffix")
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = if (!user.isActive) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
             IconButton(onClick = onDeleteClick) {
-                Icon(Icons.Filled.Delete, contentDescription = "Delete user")
+                Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.users_delete_cd))
             }
         }
     }
+}
+
+@Composable
+internal fun userRoleLabel(role: String): String = when (role) {
+    "admin" -> stringResource(R.string.users_role_admin)
+    "user" -> stringResource(R.string.users_role_user)
+    else -> role.replaceFirstChar { it.uppercase() }
 }

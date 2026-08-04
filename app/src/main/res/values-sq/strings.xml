@@ -1,0 +1,240 @@
+<resources>
+    <string name="app_name">FAB Inventory</string>
+
+    <string name="nav_dashboard">Paneli</string>
+    <string name="nav_products">Produktet</string>
+    <string name="nav_movements">Lëvizjet</string>
+
+    <string name="common_save">Ruaj</string>
+    <string name="common_cancel">Anulo</string>
+    <string name="common_delete">Fshi</string>
+    <string name="common_edit">Ndrysho</string>
+    <string name="common_loading">Duke ngarkuar…</string>
+    <string name="common_retry">Provo përsëri</string>
+    <string name="common_back">Prapa</string>
+    <string name="common_add">Shto</string>
+    <string name="common_something_wrong">Diçka shkoi keq</string>
+    <string name="common_cannot_be_undone">Kjo veprim nuk mund të kthehet prapa.</string>
+    <string name="common_save_changes">Ruaj ndryshimet</string>
+    <string name="common_notes_optional">Shënime (opsionale)</string>
+    <string name="common_inactive">Joaktiv</string>
+
+    <string name="login_subtitle">Hyni për të menaxhuar stokun në lëvizje</string>
+    <string name="login_email_or_username">Email ose emri i përdoruesit</string>
+    <string name="login_password">Fjalëkalimi</string>
+    <string name="login_sign_in">Hyni</string>
+    <string name="login_footer">Lidhet me sistemin tuaj FAB Construction IMS.</string>
+
+    <!-- Dashboard (DashboardScreen.kt, DashboardCharts.kt) -->
+    <string name="dashboard_greeting">Përshëndetje, %1$s</string>
+    <string name="dashboard_title">Paneli</string>
+    <string name="dashboard_manage_access_cd">Menaxho qasjen në depo</string>
+    <string name="dashboard_log_out_cd">Dilni</string>
+    <string name="dashboard_stock_in">Hyrje stoku</string>
+    <string name="dashboard_stock_out">Dalje stoku</string>
+    <string name="dashboard_net_change">Ndryshimi neto</string>
+    <string name="dashboard_health_overview">Përmbledhja e gjendjes</string>
+    <string name="dashboard_stock_health">Shëndeti i stokut</string>
+    <string name="dashboard_work_done">Punë e kryer</string>
+    <string name="dashboard_needs_attention">Kërkon vëmendje</string>
+    <string name="dashboard_products_label">Produktet</string>
+    <string name="dashboard_low_stock_label">Stok i ulët</string>
+    <string name="dashboard_warehouses_label">Depot</string>
+    <string name="dashboard_active_work_label">Punë aktive</string>
+    <string name="dashboard_work_process_overview">Përmbledhja e urdhrave të punës</string>
+    <string name="dashboard_top_moved_products">Produktet më të lëvizura (30 ditë)</string>
+    <string name="dashboard_stock_movement_14d">Lëvizja e stokut (14 ditë)</string>
+    <string name="dashboard_products_by_category">Produktet sipas kategorisë</string>
+    <string name="dashboard_top_suppliers">Furnizuesit kryesorë</string>
+    <string name="dashboard_supplier_products_count">%1$d produkte</string>
+    <string name="dashboard_add_product">Shto produkt</string>
+    <string name="dashboard_record_movement">Regjistro lëvizje</string>
+    <string name="dashboard_low_stock_items">Artikuj me stok të ulët</string>
+    <string name="dashboard_recent_activity">Aktiviteti i fundit</string>
+    <string name="dashboard_total_inventory_value">Vlera totale e inventarit</string>
+    <string name="dashboard_stock_health_pct">Shëndeti i stokut: %1$d%% e produkteve mbi minimumin</string>
+    <string name="dashboard_movements_this_week">Lëvizjet këtë javë</string>
+    <string name="dashboard_vs_last_week">%1$s krahasuar me javën e kaluar</string>
+    <string name="dashboard_low_stock_row">%1$s %2$s të mbetura (min %3$s)</string>
+    <string name="dashboard_status_not_started">Nuk ka filluar</string>
+    <string name="dashboard_status_started">Ka filluar</string>
+    <string name="dashboard_status_in_process">Në proces</string>
+    <string name="dashboard_status_done">Përfunduar</string>
+    <string name="chart_not_enough_data">Ende pa të dhëna të mjaftueshme</string>
+    <string name="chart_no_data">Asnjë të dhënë</string>
+    <string name="chart_no_movement_data">Ende asnjë lëvizje</string>
+
+    <!-- Products list (ProductsScreen.kt) -->
+    <string name="products_title">Produktet</string>
+    <string name="products_add_cd">Shto produkt</string>
+    <string name="products_search_label">Kërko produkte</string>
+    <string name="products_empty_title">Ende asnjë produkt</string>
+    <string name="products_empty_title_no_matches">Asnjë përputhje</string>
+    <string name="products_empty_subtitle">Prekni + për të shtuar produktin e parë.</string>
+    <string name="products_empty_subtitle_no_matches">Provoni një term tjetër kërkimi.</string>
+    <string name="products_delete_title">Të fshihet %1$s?</string>
+    <string name="products_delete_fallback">ky produkt</string>
+    <string name="products_delete_cd">Fshi produktin</string>
+    <string name="products_row_sku">SKU %1$s</string>
+
+    <!-- Product form (ProductFormScreen.kt) -->
+    <string name="product_form_edit_title">Ndrysho produktin</string>
+    <string name="product_form_new_title">Produkt i ri</string>
+    <string name="product_form_no_warehouse_access">Ende nuk keni qasje në asnjë depo. Kërkoni një administrator t\'ju japë qasje përpara se të shtoni produkte.</string>
+    <string name="product_form_name_label">Emri</string>
+    <string name="product_form_sku_label">SKU (opsionale)</string>
+    <string name="product_form_photo_label">Foto</string>
+    <string name="product_form_photo_cd">Foto e produktit</string>
+    <string name="product_form_camera">Kamera</string>
+    <string name="product_form_gallery">Galeria</string>
+    <string name="product_form_warehouse_label">Depoja</string>
+    <string name="product_form_quantity_label">Sasia</string>
+    <string name="product_form_quantity_hint">Regjistroni një lëvizje stoku për të ndryshuar sasinë</string>
+    <string name="product_form_unit_label">Njësia</string>
+    <string name="product_form_min_stock_label">Niveli minimal i stokut</string>
+    <string name="product_form_unit_price_label">Çmimi për njësi (opsionale)</string>
+    <string name="product_form_status_label">Statusi</string>
+    <string name="product_form_category_label">Kategoria (opsionale)</string>
+    <string name="product_form_none">Asnjë</string>
+    <string name="product_form_supplier_label">Furnizuesi (opsionale)</string>
+    <string name="product_form_description_label">Përshkrimi (opsionale)</string>
+    <string name="product_form_create">Krijo produktin</string>
+    <string name="product_status_active">Aktiv</string>
+    <string name="product_status_inactive">Joaktiv</string>
+    <string name="product_status_discontinued">I ndërprerë</string>
+
+    <!-- Product detail (ProductDetailScreen.kt) -->
+    <string name="product_detail_title">Produkti</string>
+    <string name="product_detail_edit_cd">Ndrysho produktin</string>
+    <string name="product_detail_delete_cd">Fshi produktin</string>
+    <string name="product_detail_photo_cd">Foto e %1$s</string>
+    <string name="product_detail_sku">SKU %1$s</string>
+    <string name="product_detail_quantity_label">Sasia</string>
+    <string name="product_detail_min_stock_label">Niveli minimal i stokut</string>
+    <string name="product_detail_unit_price_label">Çmimi për njësi</string>
+    <string name="product_detail_status_label">Statusi</string>
+    <string name="product_detail_category_label">Kategoria</string>
+    <string name="product_detail_warehouse_label">Depoja</string>
+    <string name="product_detail_supplier_label">Furnizuesi</string>
+    <string name="product_detail_description_label">Përshkrimi</string>
+    <string name="product_detail_notes_label">Shënime</string>
+    <string name="product_detail_low_stock_warning">Ky artikull është në ose nën nivelin minimal të stokut.</string>
+    <string name="product_detail_record_movement">Regjistro lëvizje stoku</string>
+    <string name="product_detail_delete_title">Të fshihet ky produkt?</string>
+
+    <!-- Movements list (MovementsScreen.kt) -->
+    <string name="movements_title">Lëvizjet e stokut</string>
+    <string name="movements_record_cd">Regjistro lëvizje</string>
+    <string name="movements_empty_title">Ende asnjë lëvizje</string>
+    <string name="movements_empty_subtitle">Prekni + për të regjistruar hyrje, dalje ose rregullim.</string>
+    <string name="movements_unknown_product">Produkti #%1$d</string>
+    <string name="movements_unknown_user">I panjohur</string>
+    <string name="movement_type_stock_in">Hyrje stoku</string>
+    <string name="movement_type_stock_out">Dalje stoku</string>
+    <string name="movement_type_adjustment">Rregullim</string>
+
+    <!-- Create movement (CreateMovementScreen.kt) -->
+    <string name="create_movement_title">Regjistro lëvizje stoku</string>
+    <string name="create_movement_select_product">Zgjidh një produkt</string>
+    <string name="create_movement_qty_label">Sasia (%1$s)</string>
+    <string name="create_movement_reason_label">Arsyeja (opsionale)</string>
+    <string name="create_movement_save">Ruaj lëvizjen</string>
+    <string name="create_movement_in_stock">%1$s %2$s në stok</string>
+    <string name="create_movement_currently_in_stock">%1$s %2$s aktualisht në stok</string>
+    <string name="create_movement_change_product_cd">Ndrysho produktin</string>
+    <string name="create_movement_type_label">Lloji i lëvizjes</string>
+
+    <!-- Admin home (AdminHomeScreen.kt) -->
+    <string name="admin_home_title">Administrimi</string>
+    <string name="admin_home_users_title">Përdoruesit</string>
+    <string name="admin_home_users_subtitle">Krijo, ndrysho, çaktivizo ose fshi llogaritë e përdoruesve</string>
+    <string name="admin_home_access_title">Qasja në depo</string>
+    <string name="admin_home_access_subtitle">Zgjidh se cilat depo mund të shtojë ose ndryshojë secili përdorues</string>
+    <string name="admin_home_warehouses_title">Depot</string>
+    <string name="admin_home_warehouses_subtitle">Shto, ndrysho ose hiq depot</string>
+    <string name="admin_home_suppliers_title">Furnizuesit</string>
+    <string name="admin_home_suppliers_subtitle">Shto, ndrysho ose hiq furnizuesit</string>
+
+    <!-- Manage access (ManageAccessScreen.kt) -->
+    <string name="manage_access_title">Menaxho qasjen në depo</string>
+    <string name="manage_access_empty">Nuk u gjet asnjë përdorues jo-administrator.</string>
+
+    <!-- Edit user access (EditUserAccessScreen.kt) -->
+    <string name="edit_user_access_title_fallback">Menaxho qasjen</string>
+    <string name="edit_user_access_description">Depot ku ky përdorues mund të shtojë ose ndryshojë produkte:</string>
+    <string name="edit_user_access_save">Ruaj qasjen</string>
+
+    <!-- Locations list (LocationsListScreen.kt) -->
+    <string name="locations_title">Depot</string>
+    <string name="locations_add_cd">Shto depo</string>
+    <string name="locations_empty_title">Ende asnjë depo</string>
+    <string name="locations_empty_subtitle">Prekni + për të shtuar depon e parë.</string>
+    <string name="locations_delete_title">Të fshihet %1$s?</string>
+    <string name="locations_delete_fallback">kjo depo</string>
+    <string name="locations_delete_body">Kjo funksionon vetëm nëse depoja nuk ka produkte në të.</string>
+    <string name="locations_delete_cd">Fshi depon</string>
+    <string name="locations_row_products_count">%1$d produkte</string>
+
+    <!-- Location form (LocationFormScreen.kt) -->
+    <string name="location_form_edit_title">Ndrysho depon</string>
+    <string name="location_form_new_title">Depo e re</string>
+    <string name="location_form_name_label">Emri</string>
+    <string name="location_form_city_label">Qyteti (opsionale)</string>
+    <string name="location_form_address_label">Adresa (opsionale)</string>
+    <string name="location_form_manager_label">Emri i menaxherit (opsionale)</string>
+    <string name="location_form_email_label">Email kontakti (opsionale)</string>
+    <string name="location_form_phone_label">Telefon kontakti (opsionale)</string>
+    <string name="location_form_create">Krijo depon</string>
+
+    <!-- Suppliers list (SuppliersListScreen.kt) -->
+    <string name="suppliers_title">Furnizuesit</string>
+    <string name="suppliers_add_cd">Shto furnizues</string>
+    <string name="suppliers_empty_title">Ende asnjë furnizues</string>
+    <string name="suppliers_empty_subtitle">Prekni + për të shtuar furnizuesin e parë.</string>
+    <string name="suppliers_delete_title">Të fshihet %1$s?</string>
+    <string name="suppliers_delete_fallback">ky furnizues</string>
+    <string name="suppliers_delete_cd">Fshi furnizuesin</string>
+    <string name="suppliers_row_products_count">%1$d produkte</string>
+
+    <!-- Supplier form (SupplierFormScreen.kt) -->
+    <string name="supplier_form_edit_title">Ndrysho furnizuesin</string>
+    <string name="supplier_form_new_title">Furnizues i ri</string>
+    <string name="supplier_form_name_label">Emri</string>
+    <string name="supplier_form_contact_name_label">Personi i kontaktit (opsionale)</string>
+    <string name="supplier_form_email_label">Email (opsionale)</string>
+    <string name="supplier_form_phone_label">Telefoni (opsionale)</string>
+    <string name="supplier_form_city_label">Qyteti (opsionale)</string>
+    <string name="supplier_form_address_label">Adresa (opsionale)</string>
+    <string name="supplier_form_create">Krijo furnizuesin</string>
+
+    <!-- Users list (UsersListScreen.kt) -->
+    <string name="users_title">Përdoruesit</string>
+    <string name="users_add_cd">Shto përdorues</string>
+    <string name="users_empty_title">Ende asnjë përdorues</string>
+    <string name="users_empty_subtitle">Prekni + për të krijuar llogarinë e parë.</string>
+    <string name="users_delete_title">Të fshihet %1$s?</string>
+    <string name="users_delete_fallback">ky përdorues</string>
+    <string name="users_delete_cd">Fshi përdoruesin</string>
+    <string name="users_role_admin">Administrator</string>
+    <string name="users_role_user">Përdorues</string>
+
+    <!-- User form (UserFormScreen.kt) -->
+    <string name="user_form_edit_title">Ndrysho përdoruesin</string>
+    <string name="user_form_new_title">Përdorues i ri</string>
+    <string name="user_form_full_name_label">Emri i plotë</string>
+    <string name="user_form_email_label">Email</string>
+    <string name="user_form_username_label">Emri i përdoruesit</string>
+    <string name="user_form_phone_label">Telefon (opsionale)</string>
+    <string name="user_form_password_new_label">Fjalëkalim i ri (opsionale)</string>
+    <string name="user_form_password_label">Fjalëkalimi</string>
+    <string name="user_form_role_label">Roli</string>
+    <string name="user_form_active_label">Aktiv</string>
+    <string name="user_form_active_hint">Përdoruesit joaktivë nuk mund të hyjnë</string>
+    <string name="user_form_create">Krijo përdoruesin</string>
+
+    <!-- Access denied (RequireAdmin.kt) -->
+    <string name="access_denied_title">Qasja u refuzua</string>
+    <string name="access_denied_heading">Nuk keni leje për ta shikuar këtë faqe</string>
+    <string name="access_denied_subtitle">Ky seksion është i disponueshëm vetëm për administratorët.</string>
+    <string name="access_denied_go_back">Kthehu</string>
+</resources>

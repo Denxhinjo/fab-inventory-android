@@ -45,10 +45,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.ProductResponse
 import com.denxhinjo.fabinventory.data.remote.resolveMediaUrl
 import com.denxhinjo.fabinventory.ui.common.AppCard
@@ -91,10 +93,10 @@ fun ProductsScreen(
     Scaffold(
         modifier = modifier,
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = { CenterAlignedTopAppBar(title = { Text("Products") }) },
+        topBar = { CenterAlignedTopAppBar(title = { Text(stringResource(R.string.products_title)) }) },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddClick) {
-                Icon(Icons.Filled.Add, contentDescription = "Add product")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.products_add_cd))
             }
         },
     ) { padding ->
@@ -102,7 +104,7 @@ fun ProductsScreen(
             OutlinedTextField(
                 value = uiState.searchQuery,
                 onValueChange = viewModel::onSearchQueryChange,
-                label = { Text("Search products") },
+                label = { Text(stringResource(R.string.products_search_label)) },
                 leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                 singleLine = true,
                 modifier = Modifier
@@ -115,16 +117,23 @@ fun ProductsScreen(
                     FullScreenLoading()
                 }
                 uiState.error != null && uiState.products.isEmpty() -> {
-                    FullScreenError(message = uiState.error ?: "Something went wrong", onRetry = viewModel::refresh)
+                    FullScreenError(
+                        message = uiState.error ?: stringResource(R.string.common_something_wrong),
+                        onRetry = viewModel::refresh,
+                    )
                 }
                 uiState.products.isEmpty() -> {
                     EmptyState(
                         icon = Icons.Filled.Inventory2,
-                        title = if (uiState.searchQuery.isBlank()) "No products yet" else "No matches",
-                        subtitle = if (uiState.searchQuery.isBlank()) {
-                            "Tap + to add your first product."
+                        title = if (uiState.searchQuery.isBlank()) {
+                            stringResource(R.string.products_empty_title)
                         } else {
-                            "Try a different search term."
+                            stringResource(R.string.products_empty_title_no_matches)
+                        },
+                        subtitle = if (uiState.searchQuery.isBlank()) {
+                            stringResource(R.string.products_empty_subtitle)
+                        } else {
+                            stringResource(R.string.products_empty_subtitle_no_matches)
                         },
                     )
                 }
@@ -171,16 +180,23 @@ fun ProductsScreen(
         val product = uiState.products.find { it.id == id }
         AlertDialog(
             onDismissRequest = { pendingDeleteId = null },
-            title = { Text("Delete ${product?.name ?: "this product"}?") },
-            text = { Text("This can't be undone.") },
+            title = {
+                Text(
+                    stringResource(
+                        R.string.products_delete_title,
+                        product?.name ?: stringResource(R.string.products_delete_fallback),
+                    ),
+                )
+            },
+            text = { Text(stringResource(R.string.common_cannot_be_undone)) },
             confirmButton = {
                 TextButton(onClick = {
                     pendingDeleteId = null
                     viewModel.deleteProduct(id)
-                }) { Text("Delete") }
+                }) { Text(stringResource(R.string.common_delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingDeleteId = null }) { Text("Cancel") }
+                TextButton(onClick = { pendingDeleteId = null }) { Text(stringResource(R.string.common_cancel)) }
             },
         )
     }
@@ -228,9 +244,10 @@ private fun ProductRow(
             }
             Column(modifier = Modifier.padding(start = 12.dp).weight(1f)) {
                 Text(product.name, style = MaterialTheme.typography.titleMedium)
+                val skuText = product.sku?.let { stringResource(R.string.products_row_sku, it) }
                 Text(
                     buildString {
-                        product.sku?.let { append("SKU $it · ") }
+                        skuText?.let { append("$it · ") }
                         append("${product.quantity.trimmedString()} ${product.unit}")
                         product.location?.name?.let { append(" · $it") }
                     },
@@ -240,7 +257,7 @@ private fun ProductRow(
             }
             if (showDelete) {
                 IconButton(onClick = onDeleteClick) {
-                    Icon(Icons.Filled.Delete, contentDescription = "Delete product")
+                    Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.products_delete_cd))
                 }
             }
         }

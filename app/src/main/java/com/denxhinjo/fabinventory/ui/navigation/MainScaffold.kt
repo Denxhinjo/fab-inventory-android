@@ -16,15 +16,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.denxhinjo.fabinventory.R
 
-private data class BottomTab(val route: String, val label: String, val icon: ImageVector)
+private data class BottomTab(val route: String, val labelRes: Int, val icon: ImageVector)
 
 private val bottomTabs = listOf(
-    BottomTab(Routes.DASHBOARD, "Dashboard", Icons.Filled.Dashboard),
-    BottomTab(Routes.PRODUCTS, "Products", Icons.Filled.Inventory2),
-    BottomTab(Routes.MOVEMENTS, "Movements", Icons.Filled.SwapVert),
+    BottomTab(Routes.DASHBOARD, R.string.nav_dashboard, Icons.Filled.Dashboard),
+    BottomTab(Routes.PRODUCTS, R.string.nav_products, Icons.Filled.Inventory2),
+    BottomTab(Routes.MOVEMENTS, R.string.nav_movements, Icons.Filled.SwapVert),
 )
 
 @Composable
@@ -37,6 +39,7 @@ fun MainScaffold(
         bottomBar = {
             NavigationBar {
                 bottomTabs.forEach { tab ->
+                    val label = stringResource(tab.labelRes)
                     NavigationBarItem(
                         selected = currentRoute == tab.route,
                         onClick = {
@@ -48,8 +51,8 @@ fun MainScaffold(
                                 }
                             }
                         },
-                        icon = { Icon(tab.icon, contentDescription = tab.label) },
-                        label = { Text(tab.label) },
+                        icon = { Icon(tab.icon, contentDescription = label) },
+                        label = { Text(label) },
                     )
                 }
             }

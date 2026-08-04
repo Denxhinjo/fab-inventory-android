@@ -33,9 +33,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.LocationResponse
 import com.denxhinjo.fabinventory.ui.common.AppCard
 import com.denxhinjo.fabinventory.ui.common.EmptyState
@@ -67,31 +69,31 @@ fun LocationsListScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Warehouses") },
+                title = { Text(stringResource(R.string.locations_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddClick) {
-                Icon(Icons.Filled.Add, contentDescription = "Add warehouse")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.locations_add_cd))
             }
         },
     ) { padding ->
         when {
             uiState.isLoading -> FullScreenLoading(modifier = Modifier.padding(padding))
             uiState.error != null -> FullScreenError(
-                message = uiState.error ?: "Something went wrong",
+                message = uiState.error ?: stringResource(R.string.common_something_wrong),
                 onRetry = viewModel::load,
                 modifier = Modifier.padding(padding),
             )
             uiState.locations.isEmpty() -> EmptyState(
                 icon = Icons.Filled.Warehouse,
-                title = "No warehouses yet",
-                subtitle = "Tap + to add your first warehouse location.",
+                title = stringResource(R.string.locations_empty_title),
+                subtitle = stringResource(R.string.locations_empty_subtitle),
                 modifier = Modifier.padding(padding),
             )
             else -> PullToRefreshBox(
@@ -120,16 +122,23 @@ fun LocationsListScreen(
         val location = uiState.locations.find { it.id == id }
         AlertDialog(
             onDismissRequest = { pendingDeleteId = null },
-            title = { Text("Delete ${location?.name ?: "this warehouse"}?") },
-            text = { Text("This only works if it has no products in it.") },
+            title = {
+                Text(
+                    stringResource(
+                        R.string.locations_delete_title,
+                        location?.name ?: stringResource(R.string.locations_delete_fallback),
+                    ),
+                )
+            },
+            text = { Text(stringResource(R.string.locations_delete_body)) },
             confirmButton = {
                 TextButton(onClick = {
                     pendingDeleteId = null
                     viewModel.deleteLocation(id)
-                }) { Text("Delete") }
+                }) { Text(stringResource(R.string.common_delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingDeleteId = null }) { Text("Cancel") }
+                TextButton(onClick = { pendingDeleteId = null }) { Text(stringResource(R.string.common_cancel)) }
             },
         )
     }
@@ -151,17 +160,19 @@ private fun LocationRow(
         Row(modifier = Modifier.padding(12.dp)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(location.name, style = MaterialTheme.typography.titleMedium)
+                val productsCount = stringResource(R.string.locations_row_products_count, location.productCount ?: 0)
+                val inactiveSuffix = stringResource(R.string.common_inactive)
                 Text(
                     buildString {
                         location.city?.let { append(it) }
-                        append(" · ${location.productCount ?: 0} products")
-                        if (!location.isActive) append(" · Inactive")
+                        append(" · $productsCount")
+                        if (!location.isActive) append(" · $inactiveSuffix")
                     },
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
             IconButton(onClick = onDeleteClick) {
-                Icon(Icons.Filled.Delete, contentDescription = "Delete warehouse")
+                Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.locations_delete_cd))
             }
         }
     }

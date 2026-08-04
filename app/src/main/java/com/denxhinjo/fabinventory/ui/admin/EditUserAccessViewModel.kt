@@ -68,7 +68,7 @@ class EditUserAccessViewModel @Inject constructor(
                     )
                 },
                 onFailure = { e ->
-                    _uiState.update { it.copy(isLoading = false, error = e.message ?: "Failed to load locations") }
+                    _uiState.update { it.copy(isLoading = false, error = e.message ?: "Failed to load warehouses") }
                 },
             )
         }

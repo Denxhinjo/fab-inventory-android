@@ -9,22 +9,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.denxhinjo.fabinventory.R
 
-// Same two-typeface pairing as the site: Space Grotesk for headings/display
-// (--font-display), Inter for body/UI text (--font-sans). Both are bundled as
-// their single variable-font files, with each weight declared as a distinct
-// FontVariation.Settings instance rather than separate static font files.
+// Matches the web app, which uses a single typeface for everything --
+// Inter (--font-sans in frontend/tailwind.config.js) -- rather than a
+// separate display face for headings.
 @OptIn(ExperimentalTextApi::class)
 private fun variableFont(resId: Int, weight: FontWeight) = Font(
     resId = resId,
     weight = weight,
     variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight)),
-)
-
-val SpaceGroteskFontFamily = FontFamily(
-    variableFont(R.font.space_grotesk_variable, FontWeight.Normal),
-    variableFont(R.font.space_grotesk_variable, FontWeight.Medium),
-    variableFont(R.font.space_grotesk_variable, FontWeight.SemiBold),
-    variableFont(R.font.space_grotesk_variable, FontWeight.Bold),
 )
 
 val InterFontFamily = FontFamily(
@@ -36,19 +28,19 @@ val InterFontFamily = FontFamily(
 
 val FabInventoryTypography = Typography().let { base ->
     Typography(
-        displayLarge = base.displayLarge.copy(fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.Bold),
-        displayMedium = base.displayMedium.copy(fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.Bold),
-        displaySmall = base.displaySmall.copy(fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.SemiBold),
-        headlineLarge = base.headlineLarge.copy(fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.SemiBold),
-        headlineMedium = base.headlineMedium.copy(fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.SemiBold),
-        headlineSmall = base.headlineSmall.copy(fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.SemiBold),
-        titleLarge = base.titleLarge.copy(fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.SemiBold),
-        titleMedium = base.titleMedium.copy(fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.Medium),
-        titleSmall = base.titleSmall.copy(fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.Medium),
+        displayLarge = base.displayLarge.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.Bold),
+        displayMedium = base.displayMedium.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.Bold),
+        displaySmall = base.displaySmall.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold),
+        headlineLarge = base.headlineLarge.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.Bold),
+        headlineMedium = base.headlineMedium.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.Bold),
+        headlineSmall = base.headlineSmall.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold),
+        titleLarge = base.titleLarge.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.Bold),
+        titleMedium = base.titleMedium.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold),
+        titleSmall = base.titleSmall.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.Medium),
         bodyLarge = base.bodyLarge.copy(fontFamily = InterFontFamily, fontSize = 16.sp),
         bodyMedium = base.bodyMedium.copy(fontFamily = InterFontFamily),
         bodySmall = base.bodySmall.copy(fontFamily = InterFontFamily),
-        labelLarge = base.labelLarge.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.Medium),
+        labelLarge = base.labelLarge.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold),
         labelMedium = base.labelMedium.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.Medium),
         labelSmall = base.labelSmall.copy(fontFamily = InterFontFamily, fontWeight = FontWeight.Medium),
     )

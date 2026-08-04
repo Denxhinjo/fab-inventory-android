@@ -20,7 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.ui.common.AppCard
 
 private data class AdminAction(val title: String, val subtitle: String, val icon: ImageVector, val onClick: () -> Unit)
@@ -37,26 +39,26 @@ fun AdminHomeScreen(
 ) {
     val actions = listOf(
         AdminAction(
-            "Users",
-            "Create, edit, deactivate, or delete user accounts",
+            stringResource(R.string.admin_home_users_title),
+            stringResource(R.string.admin_home_users_subtitle),
             Icons.Filled.People,
             onManageUsers,
         ),
         AdminAction(
-            "Warehouse access",
-            "Choose which warehouses each user can add or edit products in",
+            stringResource(R.string.admin_home_access_title),
+            stringResource(R.string.admin_home_access_subtitle),
             Icons.Filled.AdminPanelSettings,
             onManageAccess,
         ),
         AdminAction(
-            "Warehouses",
-            "Add, edit, or remove warehouse locations",
+            stringResource(R.string.admin_home_warehouses_title),
+            stringResource(R.string.admin_home_warehouses_subtitle),
             Icons.Filled.Warehouse,
             onManageLocations,
         ),
         AdminAction(
-            "Suppliers",
-            "Add, edit, or remove suppliers",
+            stringResource(R.string.admin_home_suppliers_title),
+            stringResource(R.string.admin_home_suppliers_subtitle),
             Icons.Filled.LocalShipping,
             onManageSuppliers,
         ),
@@ -66,10 +68,10 @@ fun AdminHomeScreen(
         modifier = modifier,
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Admin") },
+                title = { Text(stringResource(R.string.admin_home_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
             )

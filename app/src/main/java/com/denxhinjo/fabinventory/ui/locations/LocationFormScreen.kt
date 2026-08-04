@@ -23,10 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,10 +49,18 @@ fun LocationFormScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text(if (uiState.isEditMode) "Edit warehouse" else "New warehouse") },
+                title = {
+                    Text(
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.location_form_edit_title)
+                        } else {
+                            stringResource(R.string.location_form_new_title)
+                        },
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Cancel")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_cancel))
                     }
                 },
             )
@@ -71,35 +81,35 @@ fun LocationFormScreen(
             OutlinedTextField(
                 value = uiState.name,
                 onValueChange = viewModel::onNameChange,
-                label = { Text("Name") },
+                label = { Text(stringResource(R.string.location_form_name_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
                 value = uiState.city,
                 onValueChange = viewModel::onCityChange,
-                label = { Text("City (optional)") },
+                label = { Text(stringResource(R.string.location_form_city_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
             OutlinedTextField(
                 value = uiState.address,
                 onValueChange = viewModel::onAddressChange,
-                label = { Text("Address (optional)") },
+                label = { Text(stringResource(R.string.location_form_address_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
             OutlinedTextField(
                 value = uiState.managerName,
                 onValueChange = viewModel::onManagerNameChange,
-                label = { Text("Manager name (optional)") },
+                label = { Text(stringResource(R.string.location_form_manager_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
             OutlinedTextField(
                 value = uiState.contactEmail,
                 onValueChange = viewModel::onContactEmailChange,
-                label = { Text("Contact email (optional)") },
+                label = { Text(stringResource(R.string.location_form_email_label)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
@@ -107,7 +117,7 @@ fun LocationFormScreen(
             OutlinedTextField(
                 value = uiState.contactPhone,
                 onValueChange = viewModel::onContactPhoneChange,
-                label = { Text("Contact phone (optional)") },
+                label = { Text(stringResource(R.string.location_form_phone_label)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
@@ -115,7 +125,7 @@ fun LocationFormScreen(
             OutlinedTextField(
                 value = uiState.notes,
                 onValueChange = viewModel::onNotesChange,
-                label = { Text("Notes (optional)") },
+                label = { Text(stringResource(R.string.common_notes_optional)) },
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
 
@@ -135,7 +145,13 @@ fun LocationFormScreen(
                 if (uiState.isSaving) {
                     CircularProgressIndicator(modifier = Modifier.padding(4.dp))
                 } else {
-                    Text(if (uiState.isEditMode) "Save changes" else "Create warehouse")
+                    Text(
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.common_save_changes)
+                        } else {
+                            stringResource(R.string.location_form_create)
+                        },
+                    )
                 }
             }
         }

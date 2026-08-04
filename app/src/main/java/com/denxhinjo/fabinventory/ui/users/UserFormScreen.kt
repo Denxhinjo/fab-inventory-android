@@ -27,11 +27,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
 
 private val roleOptions = listOf("user", "admin")
@@ -54,10 +56,18 @@ fun UserFormScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text(if (uiState.isEditMode) "Edit user" else "New user") },
+                title = {
+                    Text(
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.user_form_edit_title)
+                        } else {
+                            stringResource(R.string.user_form_new_title)
+                        },
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Cancel")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_cancel))
                     }
                 },
             )
@@ -78,14 +88,14 @@ fun UserFormScreen(
             OutlinedTextField(
                 value = uiState.fullName,
                 onValueChange = viewModel::onFullNameChange,
-                label = { Text("Full name") },
+                label = { Text(stringResource(R.string.user_form_full_name_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
                 value = uiState.email,
                 onValueChange = viewModel::onEmailChange,
-                label = { Text("Email") },
+                label = { Text(stringResource(R.string.user_form_email_label)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
@@ -94,7 +104,7 @@ fun UserFormScreen(
                 OutlinedTextField(
                     value = uiState.username,
                     onValueChange = viewModel::onUsernameChange,
-                    label = { Text("Username") },
+                    label = { Text(stringResource(R.string.user_form_username_label)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
                 )
@@ -102,7 +112,7 @@ fun UserFormScreen(
             OutlinedTextField(
                 value = uiState.phone,
                 onValueChange = viewModel::onPhoneChange,
-                label = { Text("Phone (optional)") },
+                label = { Text(stringResource(R.string.user_form_phone_label)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
@@ -110,14 +120,26 @@ fun UserFormScreen(
             OutlinedTextField(
                 value = uiState.password,
                 onValueChange = viewModel::onPasswordChange,
-                label = { Text(if (uiState.isEditMode) "New password (optional)" else "Password") },
+                label = {
+                    Text(
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.user_form_password_new_label)
+                        } else {
+                            stringResource(R.string.user_form_password_label)
+                        },
+                    )
+                },
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
 
-            Text("Role", style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(top = 16.dp))
+            Text(
+                stringResource(R.string.user_form_role_label),
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(top = 16.dp),
+            )
             SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
                 roleOptions.forEachIndexed { index, role ->
                     SegmentedButton(
@@ -125,7 +147,7 @@ fun UserFormScreen(
                         onClick = { viewModel.onRoleChange(role) },
                         shape = androidx.compose.material3.SegmentedButtonDefaults.itemShape(index, roleOptions.size),
                     ) {
-                        Text(role.replaceFirstChar { it.uppercase() })
+                        Text(userRoleLabel(role))
                     }
                 }
             }
@@ -135,9 +157,9 @@ fun UserFormScreen(
                     modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text("Active", style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.user_form_active_label), style = MaterialTheme.typography.labelLarge)
                         Text(
-                            "Inactive users can't log in",
+                            stringResource(R.string.user_form_active_hint),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -162,7 +184,13 @@ fun UserFormScreen(
                 if (uiState.isSaving) {
                     CircularProgressIndicator(modifier = Modifier.padding(4.dp))
                 } else {
-                    Text(if (uiState.isEditMode) "Save changes" else "Create user")
+                    Text(
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.common_save_changes)
+                        } else {
+                            stringResource(R.string.user_form_create)
+                        },
+                    )
                 }
             }
         }

@@ -19,11 +19,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 
 @Composable
 fun LoginScreen(
@@ -51,11 +53,11 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "FAB Inventory",
+            text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.titleLarge,
         )
         Text(
-            text = "Sign in to manage stock on the go",
+            text = stringResource(R.string.login_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 24.dp, top = 4.dp),
         )
@@ -66,7 +68,7 @@ fun LoginScreen(
                 username = it
                 viewModel.consumeError()
             },
-            label = { Text("Email or username") },
+            label = { Text(stringResource(R.string.login_email_or_username)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = Modifier
@@ -80,7 +82,7 @@ fun LoginScreen(
                 password = it
                 viewModel.consumeError()
             },
-            label = { Text("Password") },
+            label = { Text(stringResource(R.string.login_password)) },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -106,12 +108,12 @@ fun LoginScreen(
             if (uiState is LoginUiState.Loading) {
                 CircularProgressIndicator(modifier = Modifier.padding(4.dp))
             } else {
-                Text("Sign in")
+                Text(stringResource(R.string.login_sign_in))
             }
         }
 
         Text(
-            text = "Connects to your FAB Construction IMS backend.",
+            text = stringResource(R.string.login_footer),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .fillMaxWidth()

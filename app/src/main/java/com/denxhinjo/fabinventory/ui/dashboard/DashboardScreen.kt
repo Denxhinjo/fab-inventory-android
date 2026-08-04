@@ -44,9 +44,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.CategoryResponse
 import com.denxhinjo.fabinventory.data.remote.dto.DashboardResponse
 import com.denxhinjo.fabinventory.data.remote.dto.LowStockItem
@@ -76,22 +78,34 @@ fun DashboardScreen(
     val trend by viewModel.trend.collectAsStateWithLifecycle()
     val topSuppliers by viewModel.topSuppliers.collectAsStateWithLifecycle()
 
+    val greetingName = session?.fullName?.takeIf { it.isNotBlank() }
+    val manageAccessCd = stringResource(R.string.dashboard_manage_access_cd)
+    val logOutCd = stringResource(R.string.dashboard_log_out_cd)
+
     Scaffold(
         modifier = modifier,
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(session?.fullName?.takeIf { it.isNotBlank() }?.let { "Hi, $it" } ?: "Dashboard") },
+                title = {
+                    Text(
+                        if (greetingName != null) {
+                            stringResource(R.string.dashboard_greeting, greetingName)
+                        } else {
+                            stringResource(R.string.dashboard_title)
+                        },
+                    )
+                },
                 actions = {
                     if (session?.role == "admin") {
                         IconButton(onClick = onManageAccess) {
-                            Icon(Icons.Filled.AdminPanelSettings, contentDescription = "Manage warehouse access")
+                            Icon(Icons.Filled.AdminPanelSettings, contentDescription = manageAccessCd)
                         }
                     }
                     IconButton(onClick = {
                         viewModel.logout()
                         onLogout()
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Log out")
+                        Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = logOutCd)
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
@@ -143,21 +157,21 @@ private fun DashboardContent(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 FlowCard(
-                    label = "Stock in",
+                    label = stringResource(R.string.dashboard_stock_in),
                     value = data.stockSummary.stockIn30d,
                     color = ColorSuccess,
                     icon = Icons.Filled.ArrowDownward,
                     modifier = Modifier.weight(1f),
                 )
                 FlowCard(
-                    label = "Stock out",
+                    label = stringResource(R.string.dashboard_stock_out),
                     value = data.stockSummary.stockOut30d,
                     color = MaterialTheme.colorScheme.error,
                     icon = Icons.Filled.ArrowUpward,
                     modifier = Modifier.weight(1f),
                 )
                 FlowCard(
-                    label = "Net change",
+                    label = stringResource(R.string.dashboard_net_change),
                     value = data.stockSummary.stockIn30d - data.stockSummary.stockOut30d,
                     color = ColorAccent2,
                     icon = Icons.Filled.SwapVert,
@@ -169,7 +183,7 @@ private fun DashboardContent(
         item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Health overview", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.dashboard_health_overview), style = MaterialTheme.typography.titleMedium)
                     Spacer12()
                     val total = data.stats.totalProducts.coerceAtLeast(1)
                     val healthy = data.stats.totalProducts - data.stats.lowStockProducts
@@ -177,9 +191,13 @@ private fun DashboardContent(
                     val wpDone = data.workProcessByStatus["Done"] ?: 0
                     GaugeRow(
                         entries = listOf(
-                            GaugeEntry("Stock health", Math.round(100f * healthy / total), ColorSuccess),
-                            GaugeEntry("Work done", Math.round(100f * wpDone / wpTotal), ColorAccent2),
-                            GaugeEntry("Needs attention", Math.round(100f * data.stats.lowStockProducts / total), MaterialTheme.colorScheme.error),
+                            GaugeEntry(stringResource(R.string.dashboard_stock_health), Math.round(100f * healthy / total), ColorSuccess),
+                            GaugeEntry(stringResource(R.string.dashboard_work_done), Math.round(100f * wpDone / wpTotal), ColorAccent2),
+                            GaugeEntry(
+                                stringResource(R.string.dashboard_needs_attention),
+                                Math.round(100f * data.stats.lowStockProducts / total),
+                                MaterialTheme.colorScheme.error,
+                            ),
                         ),
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -194,13 +212,13 @@ private fun DashboardContent(
             ) {
                 StatCard(
                     icon = Icons.Filled.Inventory2,
-                    label = "Products",
+                    label = stringResource(R.string.dashboard_products_label),
                     value = data.stats.totalProducts.toString(),
                     modifier = Modifier.weight(1f),
                 )
                 StatCard(
                     icon = Icons.Filled.WarningAmber,
-                    label = "Low stock",
+                    label = stringResource(R.string.dashboard_low_stock_label),
                     value = data.stats.lowStockProducts.toString(),
                     emphasize = data.stats.lowStockProducts > 0,
                     modifier = Modifier.weight(1f),
@@ -214,13 +232,13 @@ private fun DashboardContent(
             ) {
                 StatCard(
                     icon = Icons.Filled.Warehouse,
-                    label = "Locations",
+                    label = stringResource(R.string.dashboard_warehouses_label),
                     value = data.stats.totalLocations.toString(),
                     modifier = Modifier.weight(1f),
                 )
                 StatCard(
                     icon = Icons.Filled.Engineering,
-                    label = "Active work",
+                    label = stringResource(R.string.dashboard_active_work_label),
                     value = data.stats.activeWorkProcesses.toString(),
                     modifier = Modifier.weight(1f),
                 )
@@ -230,7 +248,7 @@ private fun DashboardContent(
         item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Work process overview", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.dashboard_work_process_overview), style = MaterialTheme.typography.titleMedium)
                     Spacer12()
                     WorkProcessBreakdown(data.workProcessByStatus)
                 }
@@ -241,7 +259,7 @@ private fun DashboardContent(
             item {
                 AppCard(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Top moved products (30 days)", style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.dashboard_top_moved_products), style = MaterialTheme.typography.titleMedium)
                         Spacer12()
                         BarChart(
                             entries = data.topMovedProducts.map { BarEntry(it.name, it.quantity) },
@@ -255,7 +273,7 @@ private fun DashboardContent(
         item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Stock movement (14 days)", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.dashboard_stock_movement_14d), style = MaterialTheme.typography.titleMedium)
                     Spacer12()
                     TrendChart(points = trend, modifier = Modifier.fillMaxWidth())
                 }
@@ -266,7 +284,7 @@ private fun DashboardContent(
             item {
                 AppCard(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Products by category", style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.dashboard_products_by_category), style = MaterialTheme.typography.titleMedium)
                         Spacer12()
                         DonutChart(
                             slices = categories
@@ -283,7 +301,7 @@ private fun DashboardContent(
             item {
                 AppCard(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Top suppliers", style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.dashboard_top_suppliers), style = MaterialTheme.typography.titleMedium)
                         Spacer12()
                         topSuppliers.forEach { supplier ->
                             Row(
@@ -294,7 +312,7 @@ private fun DashboardContent(
                             ) {
                                 Text(supplier.name, style = MaterialTheme.typography.bodyMedium)
                                 Text(
-                                    "${supplier.productCount ?: 0} products",
+                                    stringResource(R.string.dashboard_supplier_products_count, supplier.productCount ?: 0),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -308,7 +326,7 @@ private fun DashboardContent(
         item { QuickActionsRow(onAddProduct = onAddProduct, onRecordMovement = onRecordMovement) }
 
         if (data.lowStockItems.isNotEmpty()) {
-            item { SectionHeader("Low stock items") }
+            item { SectionHeader(stringResource(R.string.dashboard_low_stock_items)) }
             // Prefixed keys: low-stock items and recent-activity entries come from
             // different tables (products vs. stock movements) and can share the
             // same numeric id, which crashes LazyColumn if used as-is for both.
@@ -318,7 +336,7 @@ private fun DashboardContent(
         }
 
         if (data.recentActivity.isNotEmpty()) {
-            item { SectionHeader("Recent activity") }
+            item { SectionHeader(stringResource(R.string.dashboard_recent_activity)) }
             items(data.recentActivity, key = { "activity_${it.id}" }) { item ->
                 RecentActivityRow(item, modifier = Modifier.animateItem())
             }
@@ -357,7 +375,11 @@ private fun InventoryHeroCard(data: DashboardResponse) {
                     Icon(Icons.Filled.AccountBalanceWallet, contentDescription = null, tint = Color.White)
                 }
                 Column(modifier = Modifier.padding(start = 12.dp)) {
-                    Text("Total Inventory Value", color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        stringResource(R.string.dashboard_total_inventory_value),
+                        color = Color.White.copy(alpha = 0.85f),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
                     Text(
                         "$${data.stats.totalInventoryValue.formatMoney()}",
                         color = Color.White,
@@ -369,7 +391,7 @@ private fun InventoryHeroCard(data: DashboardResponse) {
             Spacer12()
 
             Text(
-                "Stock health: ${Math.round(healthPct * 100)}% of products above minimum",
+                stringResource(R.string.dashboard_stock_health_pct, Math.round(healthPct * 100)),
                 color = Color.White.copy(alpha = 0.85f),
                 style = MaterialTheme.typography.bodySmall,
             )
@@ -404,7 +426,7 @@ private fun WeeklyProgressCard(thisWeek: Int, lastWeek: Int) {
 
     AppCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text("Movements this week", style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(R.string.dashboard_movements_this_week), style = MaterialTheme.typography.bodyMedium)
             Text("$thisWeek", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(top = 2.dp))
             Spacer12()
             Box(
@@ -423,8 +445,9 @@ private fun WeeklyProgressCard(thisWeek: Int, lastWeek: Int) {
                 )
             }
             if (growth != null) {
+                val arrowAndPct = "${if (growth >= 0) "↑" else "↓"} ${kotlin.math.abs(growth)}%"
                 Text(
-                    text = "${if (growth >= 0) "↑" else "↓"} ${kotlin.math.abs(growth)}% vs last week",
+                    text = stringResource(R.string.dashboard_vs_last_week, arrowAndPct),
                     style = MaterialTheme.typography.bodySmall,
                     color = if (growth >= 0) ColorSuccess else MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(top = 8.dp),
@@ -466,7 +489,11 @@ private fun QuickActionsRow(onAddProduct: () -> Unit, onRecordMovement: () -> Un
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 IconBadge(icon = Icons.Filled.Inventory2)
-                Text("Add product", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 8.dp))
+                Text(
+                    stringResource(R.string.dashboard_add_product),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp),
+                )
             }
         }
         AppCard(onClick = onRecordMovement, modifier = Modifier.weight(1f)) {
@@ -475,7 +502,11 @@ private fun QuickActionsRow(onAddProduct: () -> Unit, onRecordMovement: () -> Un
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 IconBadge(icon = Icons.AutoMirrored.Filled.PlaylistAddCheck)
-                Text("Record movement", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 8.dp))
+                Text(
+                    stringResource(R.string.dashboard_record_movement),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp),
+                )
             }
         }
     }
@@ -509,7 +540,7 @@ private fun WorkProcessBreakdown(byStatus: Map<String, Int>) {
                         .background(workProcessColors[status] ?: MaterialTheme.colorScheme.onSurfaceVariant),
                 )
                 Text(
-                    text = status,
+                    text = workProcessStatusLabel(status),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(start = 8.dp).weight(1f),
                 )
@@ -522,6 +553,15 @@ private fun WorkProcessBreakdown(byStatus: Map<String, Int>) {
             }
         }
     }
+}
+
+@Composable
+private fun workProcessStatusLabel(status: String): String = when (status) {
+    "Not Started" -> stringResource(R.string.dashboard_status_not_started)
+    "Started" -> stringResource(R.string.dashboard_status_started)
+    "In Process" -> stringResource(R.string.dashboard_status_in_process)
+    "Done" -> stringResource(R.string.dashboard_status_done)
+    else -> status
 }
 
 private fun donutColor(index: Int): Color {
@@ -589,7 +629,7 @@ private fun LowStockRow(item: LowStockItem, modifier: Modifier = Modifier) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(item.name, style = MaterialTheme.typography.titleMedium)
             Text(
-                "${item.quantity.formatQty()} ${item.unit} left (min ${item.minStockLevel.formatQty()})" +
+                stringResource(R.string.dashboard_low_stock_row, item.quantity.formatQty(), item.unit, item.minStockLevel.formatQty()) +
                     (item.location?.let { " · $it" } ?: ""),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.error,

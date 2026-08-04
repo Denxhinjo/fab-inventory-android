@@ -23,10 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,10 +49,18 @@ fun SupplierFormScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text(if (uiState.isEditMode) "Edit supplier" else "New supplier") },
+                title = {
+                    Text(
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.supplier_form_edit_title)
+                        } else {
+                            stringResource(R.string.supplier_form_new_title)
+                        },
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Cancel")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_cancel))
                     }
                 },
             )
@@ -71,21 +81,21 @@ fun SupplierFormScreen(
             OutlinedTextField(
                 value = uiState.name,
                 onValueChange = viewModel::onNameChange,
-                label = { Text("Name") },
+                label = { Text(stringResource(R.string.supplier_form_name_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
                 value = uiState.contactName,
                 onValueChange = viewModel::onContactNameChange,
-                label = { Text("Contact name (optional)") },
+                label = { Text(stringResource(R.string.supplier_form_contact_name_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
             OutlinedTextField(
                 value = uiState.email,
                 onValueChange = viewModel::onEmailChange,
-                label = { Text("Email (optional)") },
+                label = { Text(stringResource(R.string.supplier_form_email_label)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
@@ -93,7 +103,7 @@ fun SupplierFormScreen(
             OutlinedTextField(
                 value = uiState.phone,
                 onValueChange = viewModel::onPhoneChange,
-                label = { Text("Phone (optional)") },
+                label = { Text(stringResource(R.string.supplier_form_phone_label)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
@@ -101,21 +111,21 @@ fun SupplierFormScreen(
             OutlinedTextField(
                 value = uiState.city,
                 onValueChange = viewModel::onCityChange,
-                label = { Text("City (optional)") },
+                label = { Text(stringResource(R.string.supplier_form_city_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
             OutlinedTextField(
                 value = uiState.address,
                 onValueChange = viewModel::onAddressChange,
-                label = { Text("Address (optional)") },
+                label = { Text(stringResource(R.string.supplier_form_address_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
             OutlinedTextField(
                 value = uiState.notes,
                 onValueChange = viewModel::onNotesChange,
-                label = { Text("Notes (optional)") },
+                label = { Text(stringResource(R.string.common_notes_optional)) },
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
 
@@ -135,7 +145,13 @@ fun SupplierFormScreen(
                 if (uiState.isSaving) {
                     CircularProgressIndicator(modifier = Modifier.padding(4.dp))
                 } else {
-                    Text(if (uiState.isEditMode) "Save changes" else "Create supplier")
+                    Text(
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.common_save_changes)
+                        } else {
+                            stringResource(R.string.supplier_form_create)
+                        },
+                    )
                 }
             }
         }

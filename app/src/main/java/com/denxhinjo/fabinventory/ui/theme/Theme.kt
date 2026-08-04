@@ -1,31 +1,33 @@
 package com.denxhinjo.fabinventory.ui.theme
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-// The site is dark-only by design (`color-scheme: dark` in globals.css, no
-// light-mode toggle) -- the app matches that rather than following the
-// system light/dark setting.
-private val AppColorScheme = darkColorScheme(
-    primary = ColorAccent,
-    onPrimary = ColorBg,
-    primaryContainer = ColorAccentDim,
-    onPrimaryContainer = ColorAccentStrong,
+// Matches the web app's light, amber-accented construction/industrial
+// identity (frontend/tailwind.config.js + frontend/src/index.css) rather
+// than following the system light/dark setting -- both clients should read
+// as the same product. A dark variant can be added later as a real design
+// decision, not by accident of two apps independently picking different themes.
+private val AppColorScheme = lightColorScheme(
+    primary = ColorPrimary,
+    onPrimary = ColorSurface,
+    primaryContainer = ColorPrimaryContainer,
+    onPrimaryContainer = ColorOnPrimaryContainer,
     secondary = ColorAccent2,
-    onSecondary = ColorForeground,
-    secondaryContainer = ColorSurfaceHover,
+    onSecondary = ColorSurface,
+    secondaryContainer = ColorSurfaceVariant,
     onSecondaryContainer = ColorForeground,
-    background = ColorBg,
+    background = ColorBackground,
     onBackground = ColorForeground,
     surface = ColorSurface,
     onSurface = ColorForeground,
-    surfaceVariant = ColorSurfaceHover,
+    surfaceVariant = ColorSurfaceVariant,
     onSurfaceVariant = ColorMuted,
     outline = ColorBorder,
     outlineVariant = ColorBorderStrong,
     error = ColorError,
-    onError = ColorBg,
+    onError = ColorSurface,
 )
 
 @Composable

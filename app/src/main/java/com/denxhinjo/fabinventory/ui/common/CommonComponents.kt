@@ -25,13 +25,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.denxhinjo.fabinventory.R
 
 /**
- * Card styled to match the bordered, dark-surface cards used across
- * denxhinjo-labs.vercel.app -- a flat surface fill plus a 1dp hairline border,
- * rather than Material's default tonal-elevation shadow look.
+ * Card styled to match the web app's `.card` class (frontend/src/index.css):
+ * a white surface, a 1dp slate-200 border, a 12dp corner radius (Tailwind's
+ * `rounded-xl`), and a subtle shadow (`shadow-sm`) rather than Material's
+ * default tonal-elevation look.
  */
 @Composable
 fun AppCard(
@@ -42,7 +45,8 @@ fun AppCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-        shape = RoundedCornerShape(14.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        shape = RoundedCornerShape(12.dp),
         content = content,
     )
 }
@@ -58,7 +62,8 @@ fun AppCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-        shape = RoundedCornerShape(14.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        shape = RoundedCornerShape(12.dp),
         content = content,
     )
 }
@@ -100,7 +105,7 @@ fun FullScreenError(
         )
         if (onRetry != null) {
             Button(onClick = onRetry, modifier = Modifier.padding(top = 16.dp)) {
-                Text("Retry")
+                Text(stringResource(R.string.common_retry))
             }
         }
     }

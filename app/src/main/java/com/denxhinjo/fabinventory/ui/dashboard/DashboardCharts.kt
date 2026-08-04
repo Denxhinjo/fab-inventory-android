@@ -26,8 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.denxhinjo.fabinventory.R
 
 data class DayPoint(val label: String, val stockIn: Double, val stockOut: Double)
 
@@ -50,15 +52,15 @@ fun TrendChart(points: List<DayPoint>, modifier: Modifier = Modifier) {
 
     Column(modifier = modifier) {
         Row {
-            LegendDot(color = inColor, label = "Stock in")
+            LegendDot(color = inColor, label = stringResource(R.string.dashboard_stock_in))
             Spacer(modifier = Modifier.width(16.dp))
-            LegendDot(color = outColor, label = "Stock out")
+            LegendDot(color = outColor, label = stringResource(R.string.dashboard_stock_out))
         }
         Spacer(modifier = Modifier.height(12.dp))
 
         if (points.size < 2) {
             Text(
-                "Not enough data yet",
+                stringResource(R.string.chart_not_enough_data),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(vertical = 24.dp),
@@ -136,7 +138,7 @@ fun DonutChart(slices: List<DonutSlice>, modifier: Modifier = Modifier) {
     val total = slices.sumOf { it.value }
     if (total <= 0) {
         Text(
-            "No data",
+            stringResource(R.string.chart_no_data),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = modifier.padding(vertical = 24.dp),
@@ -189,7 +191,7 @@ fun DonutChart(slices: List<DonutSlice>, modifier: Modifier = Modifier) {
 fun BarChart(entries: List<BarEntry>, modifier: Modifier = Modifier) {
     if (entries.isEmpty()) {
         Text(
-            "No movement data yet",
+            stringResource(R.string.chart_no_movement_data),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = modifier.padding(vertical = 24.dp),

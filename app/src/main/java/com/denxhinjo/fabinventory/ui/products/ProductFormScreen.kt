@@ -46,11 +46,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.LocationResponse
 import com.denxhinjo.fabinventory.data.remote.resolveMediaUrl
 import com.denxhinjo.fabinventory.ui.common.FullScreenLoading
@@ -85,10 +87,18 @@ fun ProductFormScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text(if (uiState.isEditMode) "Edit product" else "New product") },
+                title = {
+                    Text(
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.product_form_edit_title)
+                        } else {
+                            stringResource(R.string.product_form_new_title)
+                        },
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Cancel")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_cancel))
                     }
                 },
             )
@@ -108,7 +118,7 @@ fun ProductFormScreen(
         ) {
             if (!uiState.isAdmin && uiState.availableLocations.isEmpty()) {
                 Text(
-                    "You haven't been granted access to any warehouse yet. Ask an admin to grant you access before adding products.",
+                    stringResource(R.string.product_form_no_warehouse_access),
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -118,7 +128,7 @@ fun ProductFormScreen(
             OutlinedTextField(
                 value = uiState.name,
                 onValueChange = viewModel::onNameChange,
-                label = { Text("Name") },
+                label = { Text(stringResource(R.string.product_form_name_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -126,14 +136,18 @@ fun ProductFormScreen(
             OutlinedTextField(
                 value = uiState.sku,
                 onValueChange = viewModel::onSkuChange,
-                label = { Text("SKU (optional)") },
+                label = { Text(stringResource(R.string.product_form_sku_label)) },
                 singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 12.dp),
             )
 
-            Text("Photo", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+            Text(
+                stringResource(R.string.product_form_photo_label),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+            )
             ProductImagePicker(
                 localUri = uiState.localImageUri,
                 remoteUrl = uiState.imageUrl,
@@ -151,7 +165,11 @@ fun ProductFormScreen(
                 Text(error, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
             }
 
-            Text("Location", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+            Text(
+                stringResource(R.string.product_form_warehouse_label),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+            )
             LocationPicker(
                 locations = uiState.availableLocations,
                 selected = uiState.selectedLocation,
@@ -160,20 +178,31 @@ fun ProductFormScreen(
 
             Row2(
                 left = {
-                    OutlinedTextField(
-                        value = uiState.quantity,
-                        onValueChange = viewModel::onQuantityChange,
-                        label = { Text("Quantity") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
+                    Column {
+                        OutlinedTextField(
+                            value = uiState.quantity,
+                            onValueChange = viewModel::onQuantityChange,
+                            label = { Text(stringResource(R.string.product_form_quantity_label)) },
+                            singleLine = true,
+                            enabled = !uiState.isEditMode,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        if (uiState.isEditMode) {
+                            Text(
+                                stringResource(R.string.product_form_quantity_hint),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(top = 4.dp),
+                            )
+                        }
+                    }
                 },
                 right = {
                     OutlinedTextField(
                         value = uiState.unit,
                         onValueChange = viewModel::onUnitChange,
-                        label = { Text("Unit") },
+                        label = { Text(stringResource(R.string.product_form_unit_label)) },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -185,7 +214,7 @@ fun ProductFormScreen(
                     OutlinedTextField(
                         value = uiState.minStockLevel,
                         onValueChange = viewModel::onMinStockLevelChange,
-                        label = { Text("Min stock level") },
+                        label = { Text(stringResource(R.string.product_form_min_stock_label)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         modifier = Modifier.fillMaxWidth(),
@@ -195,7 +224,7 @@ fun ProductFormScreen(
                     OutlinedTextField(
                         value = uiState.unitPrice,
                         onValueChange = viewModel::onUnitPriceChange,
-                        label = { Text("Unit price (optional)") },
+                        label = { Text(stringResource(R.string.product_form_unit_price_label)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         modifier = Modifier.fillMaxWidth(),
@@ -203,24 +232,32 @@ fun ProductFormScreen(
                 },
             )
 
-            Text("Status", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+            Text(
+                stringResource(R.string.product_form_status_label),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+            )
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 PRODUCT_STATUSES.forEach { status ->
                     FilterChip(
                         selected = uiState.status == status,
                         onClick = { viewModel.onStatusChange(status) },
-                        label = { Text(status.replaceFirstChar { it.uppercase() }) },
+                        label = { Text(productStatusLabel(status)) },
                     )
                 }
             }
 
             if (uiState.availableCategories.isNotEmpty()) {
-                Text("Category (optional)", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+                Text(
+                    stringResource(R.string.product_form_category_label),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+                )
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     FilterChip(
                         selected = uiState.selectedCategory == null,
                         onClick = { viewModel.onCategorySelected(null) },
-                        label = { Text("None") },
+                        label = { Text(stringResource(R.string.product_form_none)) },
                     )
                     uiState.availableCategories.forEach { category ->
                         FilterChip(
@@ -233,12 +270,16 @@ fun ProductFormScreen(
             }
 
             if (uiState.availableSuppliers.isNotEmpty()) {
-                Text("Supplier (optional)", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+                Text(
+                    stringResource(R.string.product_form_supplier_label),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+                )
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     FilterChip(
                         selected = uiState.selectedSupplier == null,
                         onClick = { viewModel.onSupplierSelected(null) },
-                        label = { Text("None") },
+                        label = { Text(stringResource(R.string.product_form_none)) },
                     )
                     uiState.availableSuppliers.forEach { supplier ->
                         FilterChip(
@@ -253,7 +294,7 @@ fun ProductFormScreen(
             OutlinedTextField(
                 value = uiState.description,
                 onValueChange = viewModel::onDescriptionChange,
-                label = { Text("Description (optional)") },
+                label = { Text(stringResource(R.string.product_form_description_label)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
@@ -262,7 +303,7 @@ fun ProductFormScreen(
             OutlinedTextField(
                 value = uiState.notes,
                 onValueChange = viewModel::onNotesChange,
-                label = { Text("Notes (optional)") },
+                label = { Text(stringResource(R.string.common_notes_optional)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 12.dp),
@@ -286,11 +327,25 @@ fun ProductFormScreen(
                 if (uiState.isSaving) {
                     CircularProgressIndicator(modifier = Modifier.padding(4.dp))
                 } else {
-                    Text(if (uiState.isEditMode) "Save changes" else "Create product")
+                    Text(
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.common_save_changes)
+                        } else {
+                            stringResource(R.string.product_form_create)
+                        },
+                    )
                 }
             }
         }
     }
+}
+
+@Composable
+internal fun productStatusLabel(status: String): String = when (status) {
+    "active" -> stringResource(R.string.product_status_active)
+    "inactive" -> stringResource(R.string.product_status_inactive)
+    "discontinued" -> stringResource(R.string.product_status_discontinued)
+    else -> status.replaceFirstChar { it.uppercase() }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -344,7 +399,7 @@ private fun ProductImagePicker(
             if (model != null) {
                 AsyncImage(
                     model = model,
-                    contentDescription = "Product photo",
+                    contentDescription = stringResource(R.string.product_form_photo_cd),
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                 )
@@ -365,11 +420,11 @@ private fun ProductImagePicker(
         ) {
             OutlinedButton(onClick = onCameraClick) {
                 Icon(Icons.Filled.PhotoCamera, contentDescription = null, modifier = Modifier.size(18.dp))
-                Text(" Camera")
+                Text(" " + stringResource(R.string.product_form_camera))
             }
             OutlinedButton(onClick = onGalleryClick) {
                 Icon(Icons.Filled.Image, contentDescription = null, modifier = Modifier.size(18.dp))
-                Text(" Gallery")
+                Text(" " + stringResource(R.string.product_form_gallery))
             }
         }
     }

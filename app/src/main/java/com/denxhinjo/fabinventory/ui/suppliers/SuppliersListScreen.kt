@@ -33,9 +33,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.denxhinjo.fabinventory.R
 import com.denxhinjo.fabinventory.data.remote.dto.SupplierResponse
 import com.denxhinjo.fabinventory.ui.common.AppCard
 import com.denxhinjo.fabinventory.ui.common.EmptyState
@@ -67,31 +69,31 @@ fun SuppliersListScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Suppliers") },
+                title = { Text(stringResource(R.string.suppliers_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddClick) {
-                Icon(Icons.Filled.Add, contentDescription = "Add supplier")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.suppliers_add_cd))
             }
         },
     ) { padding ->
         when {
             uiState.isLoading -> FullScreenLoading(modifier = Modifier.padding(padding))
             uiState.error != null -> FullScreenError(
-                message = uiState.error ?: "Something went wrong",
+                message = uiState.error ?: stringResource(R.string.common_something_wrong),
                 onRetry = viewModel::load,
                 modifier = Modifier.padding(padding),
             )
             uiState.suppliers.isEmpty() -> EmptyState(
                 icon = Icons.Filled.LocalShipping,
-                title = "No suppliers yet",
-                subtitle = "Tap + to add your first supplier.",
+                title = stringResource(R.string.suppliers_empty_title),
+                subtitle = stringResource(R.string.suppliers_empty_subtitle),
                 modifier = Modifier.padding(padding),
             )
             else -> PullToRefreshBox(
@@ -120,16 +122,23 @@ fun SuppliersListScreen(
         val supplier = uiState.suppliers.find { it.id == id }
         AlertDialog(
             onDismissRequest = { pendingDeleteId = null },
-            title = { Text("Delete ${supplier?.name ?: "this supplier"}?") },
-            text = { Text("This can't be undone.") },
+            title = {
+                Text(
+                    stringResource(
+                        R.string.suppliers_delete_title,
+                        supplier?.name ?: stringResource(R.string.suppliers_delete_fallback),
+                    ),
+                )
+            },
+            text = { Text(stringResource(R.string.common_cannot_be_undone)) },
             confirmButton = {
                 TextButton(onClick = {
                     pendingDeleteId = null
                     viewModel.deleteSupplier(id)
-                }) { Text("Delete") }
+                }) { Text(stringResource(R.string.common_delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingDeleteId = null }) { Text("Cancel") }
+                TextButton(onClick = { pendingDeleteId = null }) { Text(stringResource(R.string.common_cancel)) }
             },
         )
     }
@@ -151,17 +160,19 @@ private fun SupplierRow(
         Row(modifier = Modifier.padding(12.dp)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(supplier.name, style = MaterialTheme.typography.titleMedium)
+                val productsCount = stringResource(R.string.suppliers_row_products_count, supplier.productCount ?: 0)
+                val inactiveSuffix = stringResource(R.string.common_inactive)
                 Text(
                     buildString {
                         supplier.contactName?.let { append(it) }
-                        append(" · ${supplier.productCount ?: 0} products")
-                        if (!supplier.isActive) append(" · Inactive")
+                        append(" · $productsCount")
+                        if (!supplier.isActive) append(" · $inactiveSuffix")
                     },
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
             IconButton(onClick = onDeleteClick) {
-                Icon(Icons.Filled.Delete, contentDescription = "Delete supplier")
+                Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.suppliers_delete_cd))
             }
         }
     }
